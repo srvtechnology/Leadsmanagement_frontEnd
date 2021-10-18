@@ -1,0 +1,272 @@
+import { BsFillTrashFill, BsPencilSquare, BsCheckCircle,BsXCircle, BsFillGrid3X3GapFill } from "react-icons/bs"
+import { Modal } from "react-bootstrap";
+import { Table, Input, Button, Space } from 'antd';
+import Highlighter from 'react-highlight-words';
+import { SearchOutlined } from '@ant-design/icons';
+import React, {useEffect} from "react";
+import { Redirect, useHistory } from "react-router-dom";
+import axios from 'axios';
+import ReactTooltip from "react-tooltip";
+
+import baseUrl from './baseurl';
+
+export default class SummaryTable extends React.Component {
+  // state = {
+  //   searchText: '',
+  //   searchedColumn: '',
+  // };
+  constructor(props) {
+    super(props);
+    this.panAccept = this.panAccept.bind(this);
+    this.panReject = this.panReject.bind(this);
+    this.state = {
+      show: false,
+      searchText: '',
+      searchedColumn: '',
+      setShow: '',
+      list: [],
+      tc: '',
+      tl: '',
+      redirect:null
+    };
+    this.user = JSON.parse(localStorage.getItem('user-info'))
+  }
+
+  // this.deleteMe = this.deleteMe.bind(this);
+  getColumnSearchProps = dataIndex => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+      <div style={{ padding: 8 }}>
+        <Input
+          ref={node => {
+            this.searchInput = node;
+          }}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{ marginBottom: 8, display: 'block' }}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => this.handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 90 }}
+          >
+            Search
+          </Button>
+          <Button onClick={() => this.handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+            Reset
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({ closeDropdown: false });
+              this.setState({
+                searchText: selectedKeys[0],
+                searchedColumn: dataIndex,
+              });
+            }}
+          >
+            Filter
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+    onFilter: (value, record) =>
+      record[dataIndex]
+        ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
+        : '',
+    onFilterDropdownVisibleChange: visible => {
+      if (visible) {
+        setTimeout(() => this.searchInput.select(), 100);
+      }
+    },
+    render: text =>
+      this.state.searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+          searchWords={[this.state.searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ''}
+        />
+      ) : (
+        text
+      ),
+  });
+
+  handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    this.setState({
+      searchText: selectedKeys[0],
+      searchedColumn: dataIndex,
+    });
+  };
+
+  handleReset = clearFilters => {
+    clearFilters();
+    this.setState({ searchText: '' });
+  };
+
+  panReject(record) {
+    console.log(record,"reject")
+    // let data = { id: record.USER_ID }
+    // if (window.confirm("Delete user " + record.NAME + "?")) {
+
+    //   axios.post(`${baseUrl}/api/delete`, data)
+    //     .then(res => res.json())
+    //     .then(res => {
+    //       console.log(res)
+
+    //     })
+    //     .catch(err => {
+    //       console.warn(err.msg)
+    //     });
+    //   window.location.reload(false)
+    // } else {
+    //   return false;
+    // }
+  }
+  onCloseModal = () => {
+    this.setState({ show: false })
+  }
+  panAccept = (record) => {
+
+    // this.setState({ tc: record.USER_ID })
+    console.log(record,"accept")
+    let data = { lead_id: record.ID }
+    if (window.confirm("Confirm PAN for " + record.NAME + "?")) {
+
+      axios.post(`${baseUrl}/api/bm-pan-sbi`, data)
+        .then(res => res.json())
+        .then(res => {
+          console.log(res)
+          
+        })
+        .catch(err => {
+          console.warn(err.msg)
+        });
+        this.setState({});
+      window.location.reload(false)
+    } else {
+      return false;
+    }
+  };
+
+  editRecord =(record) =>{
+    
+    console.log(record,"edit")
+    this.setState({ redirect: "/sbi-entry" })
+    this.renderRedirect()
+    
+  }
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to={this.state.redirect} />
+    }
+  }
+
+
+  render() {
+    
+    const columns = [];
+    // this.props.keys.push("ACTION")
+    for (var i = 0; i < this.props.keys.length; i++) {
+      var id = i
+      columns.push({
+        title: this.props.keys[i],
+        dataIndex: this.props.keys[i],
+        key: this.props.keys[i],
+        width: 'auto',
+        ...this.getColumnSearchProps(this.props.keys[i]),
+      })
+
+    }
+    columns.push({
+      title: 'Action', dataIndex: 'Action', width: 'auto', key: 'operation',  render: (text, record) => <a>
+      
+        {
+          this.user.role === 1 ?
+          <>
+          {
+            this.props.type === 3?
+            <>
+            
+            <span>  </span><button onClick={(e) => this.panAccept(record)}><BsCheckCircle value={record.USER_ID} /></button>
+            <span>   </span><button onClick={() => this.panReject(record)}><BsXCircle value={record.USER_ID} /></button>
+            </>
+            :
+            this.props.type === 2?
+            <>
+            <span>  </span><button onClick={(e) => this.editRecord(record)} data-tip data-for="registerTip">
+              <BsPencilSquare value={record.USER_ID} /></button>
+
+            </>
+            :
+            this.props.type === 1?
+            <>
+            <span>  </span><button onClick={(e) => this.panAccept(record)}><BsCheckCircle value={record.USER_ID} />qt</button>
+
+            </>
+            :
+            <></>
+          }
+          
+          </>
+          :
+          <>
+          </>
+        }
+      <ReactTooltip id="registerTip" place="top" effect="solid">
+       Proceed To Fill-up 
+      </ReactTooltip>
+      </a>,
+     
+    })
+    let leaderList = this.state.list.length > 0
+      && this.state.list.map((item, i) => {
+        return (
+          <option key={i} value={item.USER_ID}>{item.NAME}</option>
+        )
+      }, this);
+    return (
+      <>
+        <Table columns={columns} dataSource={this.props.data} />
+        {/* <Modal show={this.state.show}>Message in Modal</Modal> */}
+        <Modal show={this.state.show} onClose={this.onCloseModal}>
+          <Modal.Header>
+            <Modal.Title>Map Team Leader</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {/* <ListTable cols={this.state.cols} val={this.state.list}/> */}
+            <select id="inputState" className="form-control" value={this.state.tl} onChange={(e) => this.setState({ tl: e.target.value })}>
+              <option >Select</option>
+              {leaderList}
+            </select>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={this.onCloseModal}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={this.addLeader}>
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </>
+    )
+  }
+}
+
+// columns.push({
+//   title: this.props.keys[i],
+//   dataIndex: this.props.keys[i],
+//   key: this.props.keys[i],
+//   width: 'auto',
+//   ...this.getColumnSearchProps(this.props.keys[i]),
+//   sorter: (a, b) => a.address.length - b.address.length,
+//   sortDirections: ['descend', 'ascend'],
+// })
