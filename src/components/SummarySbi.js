@@ -91,7 +91,9 @@ function SummarySbi() {
                
             </div><br />
             <div className="row col-md-12">
-                {/* <div className="col-md-9 row"> */}
+                {
+                    user.role === 1 || user.role === 2 ?
+                    <>
                     <div className="col-md-2">
                         <Button style={{width: "100%"}} onClick={showSummary} type="button" className="btn btn-dark" >Summary</Button>
                     </div>
@@ -101,8 +103,16 @@ function SummarySbi() {
                     <div className="col-md-2">
                         <Button style={{width: "100%"}} onClick={showDuplicate} type="button" className="btn btn-primary" >Duplicate</Button>
                     </div>
+                    </>:<>
+                    <div className="col-md-2">
+                        <Button style={{width: "100%"}} onClick={showData} type="button" className="btn btn-warning" >Data</Button>
+                    </div>
+                    <div className="col-md-2">
+                        <Button style={{width: "100%"}} onClick={showDuplicate} type="button" className="btn btn-primary" >Duplicate</Button>
+                    </div>
+                    </>
+                }
                     
-                {/* </div> */}
                 
             </div><br/>
             <SummaryTable data={data} keys={keys} type={flag} bank="SBI"/>  

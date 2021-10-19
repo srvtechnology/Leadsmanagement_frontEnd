@@ -23,13 +23,14 @@ function SbiEntryForm(props) {
     const handleShow = () => setShowm(true);
     const [lead_ref, setlead_ref] = useState('');
     const [bank_remark, setbank_remark] = useState('')
-    const [sarrogate, setsarrogate] = useState(''); const [mobile, setmobile] = useState(''); const [pan, setpan] = useState(''); const [name, setname] = useState('');const [dob, setdob] = useState(''); const [education, seteducation] = useState(''); const [father_name, setfather_name] = useState('');
+    const[salutation,setsalutation]= useState(''); const [fname, setfname] = useState('');const [lname, setlname] = useState('');
+    const [sarrogate, setsarrogate] = useState(''); const [mobile, setmobile] = useState(''); const [pan, setpan] = useState('');const [dob, setdob] = useState(''); const [education, seteducation] = useState(''); const [father_name, setfather_name] = useState('');
     const [mother_name, setmother_name] = useState(''); const [marital_status, setmarital_status] = useState(''); const [resi_address, setresi_address] = useState('');const [resi_city, setresi_city] = useState(''); const [resi_pin, setresi_pin] = useState(''); const [curr_adrs_proof, setcurr_adrs_proof] = useState('');
     const [resi_phone, setresi_phone] = useState(''); const [sbi_ac, setsbi_ac] = useState(''); const [email, setemail] = useState('');const [occupation, setoccupation] = useState(''); const [designation, setdesignation] = useState(''); const [company, setcompany] = useState('');
     const [office_address, setoffice_address] = useState(''); const [office_city, setoffice_city] = useState(''); const [office_pin, setoffice_pin] = useState('');const [office_phone, setoffice_phone] = useState(''); const [aadhaar_linked_mobile, setaadhaar_linked_mobile] = useState('');const [appointment_date, setappointment_date] = useState(''); const [appointment_time, setappointment_time] = useState('');
     const [card_applied, setcard_applied] = useState(''); const [appointment_adrs, setappointment_adrs] = useState('');const [status, setstatus] = useState(0); const [comment, setcomment] = useState(''); const [tlstatus, settlstatus] = useState('');
     const [bank_document, setbank_document] = useState('');const [sal_slip, setsal_slip] = useState('');
-    const [pancard, setpancard] = useState('');const [aadharcard, setaadharcard] = useState('');
+    const [pancard, setpancard] = useState('');const [aadharcard, setaadharcard] = useState(''); const [card_limit, setcard_limit]=useState('');
     // console.log(props.match.params.id)
 
     const lead_id = props.match.params.id
@@ -38,10 +39,10 @@ function SbiEntryForm(props) {
 
         let res = await fetch(`${baseUrl}/api/get-lead-sbi/${lead_id}`);
         res = await res.json();
-        setsarrogate(res.lead.sarrogate); setmobile(res.lead.mobile); setpan(res.lead.pan); setname(res.lead.name); setdob(res.lead.dob); seteducation(res.lead.education); setfather_name(res.lead.father_name); setmother_name(res.lead.mother_name); setmarital_status(res.lead.marital_status); setresi_address(res.lead.resi_address); setresi_city(res.lead.resi_city); setresi_pin(res.lead.resi_pin); setcurr_adrs_proof(res.lead.curr_adrs_proof); setresi_phone(res.lead.resi_phone); setsbi_ac(res.lead.sbi_ac); setemail(res.lead.email); setoccupation(res.lead.occupation); setdesignation(res.lead.designation); setcompany(res.lead.company); setoffice_address(res.lead.office_address); setoffice_city(res.lead.office_city); setoffice_pin(res.lead.office_pin); setoffice_phone(res.lead.office_phone); setaadhaar_linked_mobile(res.lead.aadhaar_linked_mobile); setappointment_date(res.lead.appointment_date); setappointment_time(res.lead.appointment_time); setcard_applied(res.lead.card_applied); setappointment_adrs(res.lead.appointment_adrs);
+        setsarrogate(res.lead.sarrogate); setmobile(res.lead.mobile); setpan(res.lead.pan);setsalutation(res.lead.salutation); setfname(res.lead.fname);setlname(res.lead.lname); setdob(res.lead.dob); seteducation(res.lead.education); setfather_name(res.lead.father_name); setmother_name(res.lead.mother_name); setmarital_status(res.lead.marital_status); setresi_address(res.lead.resi_address); setresi_city(res.lead.resi_city); setresi_pin(res.lead.resi_pin); setcurr_adrs_proof(res.lead.curr_adrs_proof); setresi_phone(res.lead.resi_phone); setsbi_ac(res.lead.sbi_ac); setemail(res.lead.email); setoccupation(res.lead.occupation); setdesignation(res.lead.designation); setcompany(res.lead.company); setoffice_address(res.lead.office_address); setoffice_city(res.lead.office_city); setoffice_pin(res.lead.office_pin); setoffice_phone(res.lead.office_phone); setaadhaar_linked_mobile(res.lead.aadhaar_linked_mobile); setappointment_date(res.lead.appointment_date); setappointment_time(res.lead.appointment_time); setcard_applied(res.lead.card_applied); setappointment_adrs(res.lead.appointment_adrs);
         setstatus(res.lead.status); settlstatus(res.lead.tl_status); setbank_document(res.lead.bank_document); setapplication_no(res.lead.application_no);setcomment(res.lead.comment)
         setsal_slip(res.lead.salary_slip);setpancard(res.lead.pan_card);setaadharcard(res.lead.aadhar_card)
-        setlead_ref(res.lead.lead_ref);setbank_remark(res.lead.bank_remark)
+        setlead_ref(res.lead.lead_ref);setbank_remark(res.lead.bank_remark);setcard_limit(res.lead.card_limit)
     }, [])
     function handleBack(e) {
         history.push("/sbi-summary")
@@ -138,11 +139,11 @@ function SbiEntryForm(props) {
 
     
     function handleSubmit() {
-        let data = {
-            lead_id, status, comment, tlstatus, application_no, lead_ref, bank_remark,
-            sarrogate, mobile, pan, name, dob, education, father_name, mother_name, marital_status, resi_address, resi_city,
+        let data = {id,
+            lead_id, salutation, fname, lname,status, comment, tlstatus, application_no, lead_ref, bank_remark,
+            sarrogate, mobile, pan, dob, education, father_name, mother_name, marital_status, resi_address, resi_city,
             resi_pin, curr_adrs_proof, resi_phone, sbi_ac, email, occupation, designation, company, office_address, office_city,
-            office_pin, office_phone, aadhaar_linked_mobile, appointment_date, appointment_time, card_applied, appointment_adrs
+            office_pin, office_phone, aadhaar_linked_mobile, appointment_date, appointment_time, card_applied, appointment_adrs,card_limit
         }
 
         fetch(`${baseUrl}/api/lead-entry-sbi`,
@@ -161,11 +162,11 @@ function SbiEntryForm(props) {
                     setMsg(res.msg);
                 } else if (res.flag === 1) {
                     setMsg(res.msg)
-                    setsarrogate(''); setmobile(''); setpan(''); setname(''); setdob(''); seteducation(''); setfather_name(''); setmother_name('');
+                    setsarrogate(''); setmobile(''); setpan(''); setfname('');setlname(''); setdob(''); seteducation(''); setfather_name(''); setmother_name('');
                     setmarital_status(''); setresi_address(''); setresi_city(''); setresi_pin(''); setcurr_adrs_proof(''); setresi_phone('');
                     setsbi_ac(''); setemail(''); setoccupation(''); setdesignation(''); setcompany(''); setoffice_address(''); setoffice_city('');
                     setoffice_pin(''); setoffice_phone(''); setaadhaar_linked_mobile(''); setappointment_date(''); setappointment_time('');
-                    setcard_applied(''); setappointment_adrs('');
+                    setcard_applied(''); setappointment_adrs('');setcard_limit('')
 
                 }
 
@@ -188,15 +189,19 @@ function SbiEntryForm(props) {
                 <div className="main-form row">
                 <div className="mb-3 col-md-6 col-12">
                         <label className="form-label">Salutation</label>
-                        <select className="form-select" value={sarrogate} onChange={(e) => setsarrogate(e.target.value)}>
+                        <select className="form-select" value={salutation} onChange={(e) => setsalutation(e.target.value)}>
                             <option value="">Select</option>
                             <option value="Mr">Mr.</option>
                             <option value="Ms">Ms.</option>
                         </select>
                     </div>
                     <div className="mb-3 col-md-6 col-12">
-                        <label className="form-label">Name</label>
-                        <input type="text" className="form-control" value={name} onChange={(e) => setname(e.target.value)} />
+                        <label className="form-label">First Name</label>
+                        <input type="text" className="form-control" value={fname} onChange={(e) => setfname(e.target.value)} />
+                    </div>
+                    <div className="mb-3 col-md-6 col-12">
+                        <label className="form-label">Last Name</label>
+                        <input type="text" className="form-control" value={lname} onChange={(e) => setlname(e.target.value)} />
                     </div>
                     <div className="mb-3 col-md-6 col-12">
                         <label className="form-label">DOB</label>
@@ -236,7 +241,7 @@ function SbiEntryForm(props) {
                     </div>
                     <div className="mb-3 col-md-6 col-12">
                         <label className="form-label">Resi phone</label>
-                        <input type="text" className="form-control" value={resi_phone} onChange={(e) => setresi_phone(e.target.value)} />
+                        <input type="text" className="form-control" maxLength="10" value={resi_phone} onChange={(e) => setresi_phone(e.target.value)} />
                     </div>
                     <div className="mb-3 col-md-6 col-12">
                         <label className="form-label">Mobile</label>
@@ -244,20 +249,36 @@ function SbiEntryForm(props) {
                     </div>
                     <div className="mb-3 col-md-6 col-12">
                         <label className="form-label">Email</label>
-                        <input type="text" className="form-control" value={email} onChange={(e) => setemail(e.target.value)} />
+                        <input type="email" className="form-control" value={email} onChange={(e) => setemail(e.target.value)} />
+                    </div>
+                    <div className="mb-3 col-md-6 col-12">
+                        <label className="form-label">Occupation</label>
+                        <select className="form-select" value={occupation} onChange={(e) => setoccupation(e.target.value)}>
+                            <option value="">Occupation</option>
+                            <option value="SL">Salaried</option>
+                            <option value="SE">Self Employed</option>
+                        </select>
+                    </div>
+                    <div className="mb-3 col-md-6 col-12">
+                        <label className="form-label">Company</label>
+                        <input type="text" className="form-control" value={company} onChange={(e) => setcompany(e.target.value)} />
+                    </div>
+                    <div className="mb-3 col-md-6 col-12">
+                        <label className="form-label">Designation</label>
+                        <input type="text" className="form-control" value={designation} onChange={(e) => setdesignation(e.target.value)} />
                     </div>
                     <div className="mb-3 col-md-6 col-12">
                         <label className="form-label">Surrogate</label>
                         <select className="form-select" value={sarrogate} onChange={(e) => setsarrogate(e.target.value)}>
-                            <option value="">Sarrogate</option>
-                            <option value="IQWP">IQWP ( Salary Slip)</option>
-                            <option value="SAWP">SAWP (Other bank Card)</option>
+                            <option value="">Select</option>
+                            <option value="Salary Slip">Salary Slip</option>
+                            <option value="Other bank Card">Other bank Card</option>
                         </select>
                     </div>
                     <div className="mb-3 col-md-6 col-12">
                         <label className="form-label">Education</label>
                         <select className="form-select" value={education} onChange={(e) => seteducation(e.target.value)}>
-                            <option value="">Education</option>
+                            <option value="">Select</option>
                             <option value="Graduate">Graduate</option>
                             <option value="Post Graduate">Post Graduate</option>
                         </select>
@@ -273,22 +294,6 @@ function SbiEntryForm(props) {
                     <div className="mb-3 col-md-6 col-12">
                         <label className="form-label">SBI AC</label>
                         <input type="text" className="form-control" value={sbi_ac} onChange={(e) => setsbi_ac(e.target.value)} />
-                    </div>
-                    <div className="mb-3 col-md-6 col-12">
-                        <label className="form-label">Occupation</label>
-                        <select className="form-select" value={occupation} onChange={(e) => setoccupation(e.target.value)}>
-                            <option value="">Occupation</option>
-                            <option value="SL">Salaried</option>
-                            <option value="SE">Self Employed</option>
-                        </select>
-                    </div>
-                    <div className="mb-3 col-md-6 col-12">
-                        <label className="form-label">Designation</label>
-                        <input type="text" className="form-control" value={designation} onChange={(e) => setdesignation(e.target.value)} />
-                    </div>
-                    <div className="mb-3 col-md-6 col-12">
-                        <label className="form-label">Company</label>
-                        <input type="text" className="form-control" value={company} onChange={(e) => setcompany(e.target.value)} />
                     </div>
                     <div className="mb-3 col-md-6 col-12">
                         <label className="form-label">Office Address</label>
@@ -352,7 +357,6 @@ function SbiEntryForm(props) {
                                     <label className="form-label">Application Status</label>
                                     <select className="form-select" value={status} onChange={(e) => setstatus(e.target.value)}>
                                         <option value="0">Select</option>
-                                        <option value="1">QD</option>
                                         <option value="2">App Code Pending</option>
                                         <option value="3">App Code Received</option>
                                         <option value="4">Need Correction</option>
@@ -377,6 +381,7 @@ function SbiEntryForm(props) {
                                             <option value="Approve">QD</option>
                                             <option value="Reject">Reject</option>
                                             <option value="App Code Sent">App Code Sent</option>
+                                            <option value="Doc. Sent">Doc. Sent</option>
                                         </select>
                                     </div>
                                     <div className="row mb-3 col-md-6 col-12">
@@ -437,6 +442,20 @@ function SbiEntryForm(props) {
                                             <label className="form-label">Lead Reference</label>
                                             <input type="text" className="form-control" value={lead_ref} onChange={(e) => setlead_ref(e.target.value)} />
                                         </div>
+                                        
+                                        <div className="mb-3 col-md-6 col-12">
+                                            <label className="form-label">Application Status</label>
+                                            <select className="form-select" value={status} onChange={(e) => setstatus(e.target.value)}>
+                                                <option value="0">Select</option>
+                                                <option value="2">App Code Pending</option>
+                                                <option value="3">App Code Received</option>
+                                                <option value="4">Need Correction</option>
+                                                <option value="5">Decline</option>
+                                                <option value="6">Approve</option>
+                                                <option value="8">Card booked</option>
+                                            </select>
+                                        </div>
+                                        {status == 6 ? <>
                                         <div className="mb-3 col-md-6 col-12">
                                             <label className="form-label">Bank Remark</label>
                                             <select className="form-select" value={bank_remark} onChange={(e) => setbank_remark(e.target.value)}>
@@ -446,24 +465,19 @@ function SbiEntryForm(props) {
                                                 <option value="Doc. Pending">Doc. Pending</option>
                                             </select>
                                         </div>
-                                        <div className="mb-3 col-md-6 col-12">
-                                            <label className="form-label">Application Status</label>
-                                            <select className="form-select" value={status} onChange={(e) => setstatus(e.target.value)}>
-                                                <option value="0">Select</option>
-                                                <option value="1">QD</option>
-                                                <option value="2">App Code Pending</option>
-                                                <option value="3">App Code Received</option>
-                                                <option value="4">Need Correction</option>
-                                                <option value="5">Decline</option>
-                                                <option value="6">Approve</option>
-                                                <option value="8">Card booked</option>
-                                            </select>
-                                        </div>
+                                        </> : null}
                                         {status == 4 || status == 6 || tlstatus == 'App Code Send' ? <>
                                             <div className="mb-3 col-md-6 col-12">
                                                 <label className="form-label">Remark</label>
                                                 <textarea className="form-control" value={comment} onChange={(e) => setcomment(e.target.value)} />
                                             </div>
+                                        </> : null}
+                                        {status == 8 ? <>
+                                        <div className="mb-3 col-md-6 col-12">
+                                            <label className="form-label">Card Limit</label>
+                                            <input type="text" className="form-control" value={card_limit} onChange={(e) => setcard_limit(e.target.value)} />
+
+                                        </div>
                                         </> : null}
 
                                     </> : <></>

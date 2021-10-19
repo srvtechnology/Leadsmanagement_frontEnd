@@ -214,6 +214,9 @@ export default class SummaryTable extends React.Component {
             </>:text == "Pending for verification" ?
             <>
             <p style={{ fontWeight:"bold",color:"#ff6b00"}}>{text}</p>
+            </>:text == "QD" ?
+            <>
+            <p style={{ fontWeight:"bold",color:"#ff6b00"}}>{text}</p>
             </>:text == "Need Correction" ?
             <>
             <p style={{ fontWeight:"bold",color:"crimson"}}>{text}</p>
@@ -266,6 +269,9 @@ export default class SummaryTable extends React.Component {
             </>:text == "App Code Sent" ?
             <>
             <p style={{ fontWeight:"bold",color:"darkmagenta"}}>{text}</p>
+            </>:text == "Doc. Sent" ?
+            <>
+            <p style={{ fontWeight:"bold",color:"darkolivegreen"}}>{text}</p>
             </>:
             <></>
           }
@@ -307,7 +313,7 @@ export default class SummaryTable extends React.Component {
                   <span>  </span>
                   <Link to={`/edit-scb-entry/${record.ID}`}><button data-tip data-for="registerTip"><BsPencilSquare /></button></Link>
                   </>:<></>}
-                </>:this.user.role === 3 || this.user.role === 4? 
+                </>:this.user.role === 3 || this.user.role === 4 || this.user.role === 2? 
                 <>
                 { this.props.bank === 'SBI' && record.STATUS === 'OK'? <>
                     <span>  </span>
@@ -359,11 +365,11 @@ export default class SummaryTable extends React.Component {
 
         {
           this.props.type === 1 ?
-            <><Table columns={columns} dataSource={this.props.data} bordered scroll={{ x: 4300, y: 500 }} /></>
+            <><Table columns={columns} dataSource={this.props.data} bordered scroll={{ x: 1700, y: 500 }} /></>
             :this.props.type === 2 ? <>
-            <Table columns={columns} dataSource={this.props.data} bordered backgroundColor="#bab2b2" scroll={{ x: 2000, y: 400 }} /></>
+            <Table columns={columns} dataSource={this.props.data} bordered backgroundColor="#bab2b2" scroll={{ x: 2500, y: 500 }} /></>
             :<>
-            <Table columns={columns} dataSource={this.props.data} bordered backgroundColor="#bab2b2" scroll={{ x: 1300, y: 300 }} /></>
+            <Table columns={columns} dataSource={this.props.data} bordered backgroundColor="#bab2b2" scroll={{ x: 1300, y: 500 }} /></>
             
         }
         
