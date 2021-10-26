@@ -27,7 +27,8 @@ function SbiEntry(props) {
             .then(res => {
                 console.log(res)
                 setMsg(res.msg)
-                
+                setcheckName('')
+                setcheckPan('')
 
             })
             .catch(err => {

@@ -8,10 +8,16 @@ import baseUrl from './baseurl';
 function ScbEntry(props) {
     const [msg,setMsg]= useState('');
     const [file, setSelectedfile] = useState(null);
-    const [application_no, setapplication_no] = useState('')
+    const [application_no, setapplication_no] = useState('');
+    const [m1, setM1] = useState('');const [m2, setM2] = useState('');const [m3, setM3] = useState('');const [m4, setM4] = useState('');
+    const [bank_doc, setbank_doc] = useState(null);
+    const [salary_slip, setsalary_slip] = useState(null);
+    const [pan_card, setpan_card] = useState(null);
+    const [aadhar_card, setaadhar_card] = useState(null);
+    const [salutation, setsalutation] = useState('');const [fname, setfname] = useState('');const [lname, setlname] = useState('');
     const [status, setstatus] = useState(0);const [comment, setcomment] = useState('');
     const [card_type, setcard_type] = useState(''); const [mobile, setmobile] = useState(''); const [pan, setpan] = useState('');
-    const [name, setname] = useState(''); const [dob, setdob] = useState(''); const [birth_place, setbirth_place] = useState('');
+     const [dob, setdob] = useState(''); const [birth_place, setbirth_place] = useState('');
     const [aadhaar, setaadhaar] = useState(''); const [aadhaar_linked_mobile, setaadhaar_linked_mobile] = useState('');
     const [mother_name, setmother_name] = useState(''); const [father_name, setfather_name] = useState(''); const [dependent, setdependent] = useState('');
     const [resi_address, setresi_address] = useState(''); const [resi_city, setresi_city] = useState(''); const [resi_pin, setresi_pin] = useState('');
@@ -19,40 +25,39 @@ function ScbEntry(props) {
     const [marital_status, setmarital_status] = useState(''); const [spouse_name, setspouse_name] = useState(''); const [company, setcompany] = useState('');
     const [designation, setdesignation] = useState(''); const [current_company_experience, setcurrent_company_experience] = useState('');
     const [total_experience, settotal_experience] = useState(''); const [office_email, setoffice_email] = useState(''); const [pf, setpf] = useState('');
-    const [office_address, setoffice_address] = useState(''); const [office_city, setoffice_city] = useState(''); const [office_pin, setoffice_pin] = useState('');
+    const [office_address, setoffice_address] = useState(''); const [office_Citi, setoffice_Citi] = useState(''); const [office_pin, setoffice_pin] = useState('');
     const [office_landline, setoffice_landline] = useState(''); const [comm_address, setcomm_address] = useState('');
     const [nature_of_bussiness, setnature_of_bussiness] = useState(''); const [industry, setindustry] = useState('');
     const [tlstatus, settlstatus] = useState('');
-    const [bank_document, setbank_document] = useState('');
+    const [bank_document, setbank_document] = useState('');const [sal_slip, setsal_slip] = useState('');const [pancard, setpancard] = useState('');const [aadharcard, setaadharcard] = useState('');
+    const [lead_ref, setlead_ref] = useState('');const [bank_remark, setbank_remark] = useState('');const [card_limit, setcard_limit] = useState('');
     let user = JSON.parse(localStorage.getItem('user-info'))
     const lead_id = props.match.params.id
-    
+    const [showm, setShowm] = useState(false);
+    const handleClose = () => setShowm(false);
+    const handleShow = () => setShowm(true);
     useEffect(async () => {
         if(lead_id >0){
 
             let res = await fetch(`${baseUrl}/api/get-lead-scb/${lead_id}`);
             res = await res.json();
             console.log(res)
-            setcard_type(res.lead.card_type);setmobile(res.lead.mobile);setpan(res.lead.pan);setname(res.lead.name);setdob(res.lead.dob);setbirth_place(res.lead.birth_place);
-            setaadhaar(res.lead.aadhaar);setaadhaar_linked_mobile(res.lead.aadhaar_linked_mobile);setmother_name(res.lead.mother_name);setfather_name(res.lead.father_name);
-            setdependent(res.lead.dependent);setresi_address(res.lead.resi_address);setresi_city(res.lead.resi_city);setresi_pin(res.lead.resi_pin);setresi_status(res.lead.resi_status);
-            setcurrent_rest_time(res.lead.current_rest_time);setemail(res.lead.email);setmarital_status(res.lead.marital_status);setspouse_name(res.lead.spouse_name);setcompany(res.lead.company);
-            setdesignation(res.lead.designation);setcurrent_company_experience(res.lead.current_company_experience);settotal_experience(res.lead.total_experience);setoffice_email(res.lead.office_email);
-            setpf(res.lead.pf);setoffice_address(res.lead.office_address);setoffice_city(res.lead.office_city);setoffice_pin(res.lead.office_pin);setoffice_landline(res.lead.office_landline);
+            setcard_type(res.lead.card_type);setmobile(res.lead.mobile);setpan(res.lead.pan);setsalutation(res.lead.salutation);setfname(res.lead.fname);setlname(res.lead.lname);setdob(res.lead.dob);setbirth_place(res.lead.birth_place);setaadhaar(res.lead.aadhaar);setaadhaar_linked_mobile(res.lead.aadhaar_linked_mobile);setmother_name(res.lead.mother_name);setfather_name(res.lead.father_name);setdependent(res.lead.dependent);setresi_address(res.lead.resi_address);setresi_city(res.lead.resi_city);setresi_pin(res.lead.resi_pin);setresi_status(res.lead.resi_status);setcurrent_rest_time(res.lead.current_rest_time);setemail(res.lead.email);setmarital_status(res.lead.marital_status);setspouse_name(res.lead.spouse_name);setcompany(res.lead.company);setdesignation(res.lead.designation);setcurrent_company_experience(res.lead.current_company_experience);settotal_experience(res.lead.total_experience);setoffice_email(res.lead.office_email);setpf(res.lead.pf);setoffice_address(res.lead.office_address);setoffice_Citi(res.lead.office_Citi);setoffice_pin(res.lead.office_pin);setoffice_landline(res.lead.office_landline);
             setcomm_address(res.lead.comm_address);setnature_of_bussiness(res.lead.nature_of_bussiness);setindustry(res.lead.industry);
             setbank_document(res.lead.bank_document);settlstatus(res.lead.tl_status);setstatus(res.lead.status);setcomment(res.lead.comment)
-            setapplication_no(res.lead.application_no);setcomment(res.lead.comment)
+            setapplication_no(res.lead.application_no);setcomment(res.lead.comment);setsal_slip(res.lead.salary_slip);setpancard(res.lead.pan_card);setaadharcard(res.lead.aadhar_card);
         }
         
     }, [])
-    function setfile(e) {
+    function setfile(e) { 
         setSelectedfile(e.target.files[0])
         // console.log(file)
     }
-    function savefile() {
+    function savebank_doc() {
         const formData = new FormData()
-        formData.append("file", file);
+        formData.append("file", bank_doc);
         formData.append("id", lead_id);
+        formData.append("type", 1);
         console.log(formData)
         fetch(`${baseUrl}/api/save-file-scb`,
             {
@@ -62,6 +67,73 @@ function ScbEntry(props) {
             .then(res => res.json())
             .then(res => {
                 console.log(res)
+                setM1(res.msg);
+                // localStorage.setItem("user-info",JSON.stringify(res.user))
+                // window.location.reload(false)
+            })
+            .catch(err => {
+                console.warn(err.msg)
+            });
+    }
+    function savesal_slip() {
+        const formData = new FormData()
+        formData.append("file", salary_slip);
+        formData.append("id", lead_id);
+        formData.append("type", 2);
+        console.log(formData)
+        fetch(`${baseUrl}/api/save-file-scb`,
+            {
+                method: 'POST',
+                body: formData,
+            })
+            .then(res => res.json())
+            .then(res => {
+                console.log(res)
+                setM2(res.msg);
+                // localStorage.setItem("user-info",JSON.stringify(res.user))
+                // window.location.reload(false)
+            })
+            .catch(err => {
+                console.warn(err.msg)
+            });
+    }
+    function savepan() {
+        const formData = new FormData()
+        formData.append("file", pan_card);
+        formData.append("id", lead_id);
+        formData.append("type", 3);
+        console.log(formData)
+        fetch(`${baseUrl}/api/save-file-scb`,
+            {
+                method: 'POST',
+                body: formData,
+            })
+            .then(res => res.json())
+            .then(res => {
+                console.log(res)
+                setM3(res.msg);
+                // localStorage.setItem("user-info",JSON.stringify(res.user))
+                // window.location.reload(false)
+            })
+            .catch(err => {
+                console.warn(err.msg)
+            });
+    }
+    function saveaadhar() {
+        const formData = new FormData()
+        formData.append("file", aadhar_card);
+        formData.append("id", lead_id);
+        formData.append("type", 4);
+        console.log(formData)
+        fetch(`${baseUrl}/api/save-file-scb`,
+            {
+                method: 'POST',
+                body: formData,
+            })
+            .then(res => res.json())
+            .then(res => {
+                console.log(res)
+                setM4(res.msg);
                 // localStorage.setItem("user-info",JSON.stringify(res.user))
                 // window.location.reload(false)
             })
@@ -70,8 +142,8 @@ function ScbEntry(props) {
             });
     }
     function handleSubmit() {
-        let data = {tc: user.user_id,role:2,lead_id,status, comment, tlstatus, application_no,
-            office_city, card_type, mobile, pan, name, dob, birth_place, aadhaar, aadhaar_linked_mobile,
+        let data = {tc: user.user_id,role:user.role,lead_id,status, comment, tlstatus, application_no,lead_ref,bank_remark,
+            salutation, fname, lname,office_Citi, card_type, mobile, pan, dob, birth_place, aadhaar, aadhaar_linked_mobile,
             mother_name, father_name, dependent, resi_address, resi_city, resi_pin, resi_status, current_rest_time,
             email, marital_status, spouse_name, company, designation, current_company_experience, total_experience,
             office_email, pf, office_address, office_pin, office_landline, comm_address, nature_of_bussiness, industry
@@ -97,7 +169,7 @@ function ScbEntry(props) {
                     // setaadhaar_linked_mobile(''); setmother_name(''); setfather_name(''); setdependent(''); setresi_address('');
                     // setresi_city(''); setresi_pin(''); setresi_status(''); setcurrent_rest_time(''); setemail('');
                     // setmarital_status(''); setspouse_name(''); setcompany(''); setdesignation(''); setcurrent_company_experience('');
-                    // settotal_experience(''); setoffice_email(''); setpf(''); setoffice_address(''); setoffice_city(''); setoffice_pin('');
+                    // settotal_experience(''); setoffice_email(''); setpf(''); setoffice_address(''); setoffice_Citi(''); setoffice_pin('');
                     // setoffice_landline(''); setcomm_address(''); setnature_of_bussiness(''); setindustry('')
                 }
 
@@ -112,6 +184,7 @@ function ScbEntry(props) {
         history.push("/scb-summary")
     }
     return (
+        <>
         <section style={{ marginTop: "100px" }}>
             <div className="container p-3">
                 <h1>SCB Lead Entry</h1>
@@ -127,6 +200,22 @@ function ScbEntry(props) {
                         </select>
                     </div>
                     <div className="mb-3 col-md-6 col-12">
+                        <label className="form-label">Salutation</label>
+                        <select className="form-select" value={salutation} onChange={(e) => setsalutation(e.target.value)}>
+                            <option value="">Select</option>
+                            <option value="Mr">Mr.</option>
+                            <option value="Ms">Ms.</option>
+                        </select>
+                    </div>
+                    <div className="mb-3 col-md-6 col-12">
+                        <label className="form-label">First Name</label>
+                        <input type="text" className="form-control" value={fname} onChange={(e) => setfname(e.target.value)} />
+                    </div>
+                    <div className="mb-3 col-md-6 col-12">
+                        <label className="form-label">Last Name</label>
+                        <input type="text" className="form-control" value={lname} onChange={(e) => setlname(e.target.value)} />
+                    </div>
+                    <div className="mb-3 col-md-6 col-12">
                         <label className="form-label">Mobile</label>
                         <input type="text" className="form-control" maxLength="10" value={mobile} onChange={(e) => setmobile(e.target.value)} />
                     </div>
@@ -134,10 +223,7 @@ function ScbEntry(props) {
                         <label className="form-label">PAN</label>
                         <input type="text" className="form-control" value={pan} onChange={(e) => setpan(e.target.value)} />
                     </div>
-                    <div className="mb-3 col-md-6 col-12">
-                        <label className="form-label">Name</label>
-                        <input type="text" className="form-control" value={name} onChange={(e) => setname(e.target.value)} />
-                    </div>
+                    
                     <div className="mb-3 col-md-6 col-12">
                         <label className="form-label">DOB</label>
                         <input type="date" className="form-control" value={dob} onChange={(e) => setdob(e.target.value)} />
@@ -180,7 +266,7 @@ function ScbEntry(props) {
                         <textarea className="form-control" value={resi_address} onChange={(e) => setresi_address(e.target.value)}></textarea>
                     </div>
                     <div className="mb-3 col-md-6 col-12">
-                        <label className="form-label">Resi City</label>
+                        <label className="form-label">Resi Citi</label>
                         <input type="text" className="form-control" value={resi_city} onChange={(e) => setresi_city(e.target.value)} />
                     </div>
                     <div className="mb-3 col-md-6 col-12">
@@ -245,7 +331,7 @@ function ScbEntry(props) {
                     </div>
                     <div className="mb-3 col-md-6 col-12">
                         <label className="form-label">Office City</label>
-                        <input type="text" className="form-control" value={office_city} onChange={(e) => setoffice_city(e.target.value)} />
+                        <input type="text" className="form-control" value={office_Citi} onChange={(e) => setoffice_Citi(e.target.value)} />
                     </div>
                     <div className="mb-3 col-md-6 col-12">
                         <label className="form-label">Office PIN</label>
@@ -278,7 +364,6 @@ function ScbEntry(props) {
                                     <label className="form-label">Application Status</label>
                                     <select className="form-select" value={status} onChange={(e) => setstatus(e.target.value)}>
                                         <option value="0">Select</option>
-                                        <option value="1">QD</option>
                                         <option value="2">App Code Pending</option>
                                         <option value="3">App Code Received</option>
                                         <option value="4">Need Correction</option>
@@ -287,7 +372,7 @@ function ScbEntry(props) {
                                     </select>
                                 </div>
 
-                                {status == 4 ? <>
+                                {status == 4 || status == 6 ? <>
                                             <div className="mb-3 col-md-6 col-12">
                                                 <label className="form-label">Remark</label>
                                                 <textarea className="form-control" value={comment} onChange={(e) => setcomment(e.target.value)} />
@@ -300,53 +385,106 @@ function ScbEntry(props) {
                                         <label className="form-label">Application Status</label>
                                         <select className="form-select" value={tlstatus} onChange={(e) => settlstatus(e.target.value)}>
                                             <option value="">Select</option>
-                                            <option value="Approve" >Approve</option>
+                                            <option value="Approve">QD</option>
                                             <option value="Reject">Reject</option>
-                                            <option value="App Code Send">App Code Send</option>
+                                            <option value="App Code Sent">App Code Sent</option>
+                                            <option value="Doc. Sent">Doc. Sent</option>
                                         </select>
                                     </div>
                                     <div className="row mb-3 col-md-6 col-12">
-                                        <div className="row col-md-6">
-                                            <label className="form-label">Upload Bank Statement</label>
-                                            <input type="file" style={{ marginLeft: "12px" }} className="form-control" name="file" onChange={(e) => setfile(e)} />
-                                        </div>
+                                        
                                         <div className="col-md-3" style={{ alignContent: "end", display: "grid" }}>
-                                            <Button variant="dark" style={{ marginLeft: "12px" }} onClick={savefile}>Upload</Button>
+                                            <Button variant="dark"  onClick={handleShow}>Upload</Button>
                                         </div>
                                         {
                                             bank_document !== null ?
                                                 <>
                                                     <div className="col-md-3" style={{ alignContent: "end", display: "grid" }}>
 
-                                                        <p>View Document <a target="_blank" href={baseUrl + `/files/` + bank_document}>Bank Statement</a>.</p>
+                                                        <p><a target="_blank" href={baseUrl + `/files/` + bank_document}>Bank Statement</a></p>
                                                     </div>
-                                                </> : <></>
+                                                </> : null
+                                                
                                         }
+                                        {
+                                            sal_slip !== null ?
+                                                <>
+                                                    <div className="col-md-2" style={{ alignContent: "end", display: "grid" }}>
+
+                                                        <p><a target="_blank" href={baseUrl + `/files/` + sal_slip}>Salary Slip</a></p>
+                                                    </div>
+                                                </> : null
+                                                
+                                        }
+                                        {
+                                            pancard !== null ?
+                                                <>
+                                                    <div className="col-md-2" style={{ alignContent: "end", display: "grid" }}>
+
+                                                        <p><a target="_blank" href={baseUrl + `/files/` + pancard}>Pan Card</a></p>
+                                                    </div>
+                                                </> : null
+                                                
+                                        }
+                                        {
+                                            aadharcard !== null ?
+                                                <>
+                                                    <div className="col-md-2" style={{ alignContent: "end", display: "grid" }}>
+
+                                                        <p><a target="_blank" href={baseUrl + `/files/` + aadharcard}>Aadhaar</a></p>
+                                                    </div>
+                                                </> : null
+                                                
+                                        }
+                                        
                                     </div>
 
-                                </> :user.role === 4 ?
+                                </> : user.role === 4 ?
                                     <>
+                                        <div className="mb-3 col-md-6 col-12">
+                                            <label className="form-label">Application Number</label>
+                                            <input type="text" className="form-control" value={application_no} onChange={(e) => setapplication_no(e.target.value)} />
+                                        </div>
+                                        <div className="mb-3 col-md-6 col-12">
+                                            <label className="form-label">Lead Reference</label>
+                                            <input type="text" className="form-control" value={lead_ref} onChange={(e) => setlead_ref(e.target.value)} />
+                                        </div>
+                                        
                                         <div className="mb-3 col-md-6 col-12">
                                             <label className="form-label">Application Status</label>
                                             <select className="form-select" value={status} onChange={(e) => setstatus(e.target.value)}>
                                                 <option value="0">Select</option>
-                                                <option value="1">QD</option>
                                                 <option value="2">App Code Pending</option>
                                                 <option value="3">App Code Received</option>
                                                 <option value="4">Need Correction</option>
                                                 <option value="5">Decline</option>
                                                 <option value="6">Approve</option>
+                                                <option value="8">Card booked</option>
                                             </select>
                                         </div>
+                                        {status == 6 ? <>
                                         <div className="mb-3 col-md-6 col-12">
-                                            <label className="form-label">Application Number</label>
-                                            <input type="text" className="form-control" value={application_no} onChange={(e) => setapplication_no(e.target.value)} />
+                                            <label className="form-label">Bank Remark</label>
+                                            <select className="form-select" value={bank_remark} onChange={(e) => setbank_remark(e.target.value)}>
+                                                <option value="0">Select</option>
+                                                <option value="e-KYC Pending">e-KYC Pending</option>
+                                                <option value="v-KYC Pending">v-KYC Pending</option>
+                                                <option value="Doc. Pending">Doc. Pending</option>
+                                            </select>
                                         </div>
-                                        {status == 4 || tlstatus == 'App Code Send' ? <>
+                                        </> : null}
+                                        {status == 4 || status == 6 || tlstatus == 'App Code Send' ? <>
                                             <div className="mb-3 col-md-6 col-12">
                                                 <label className="form-label">Remark</label>
                                                 <textarea className="form-control" value={comment} onChange={(e) => setcomment(e.target.value)} />
                                             </div>
+                                        </> : null}
+                                        {status == 8 ? <>
+                                        <div className="mb-3 col-md-6 col-12">
+                                            <label className="form-label">Card Limit</label>
+                                            <input type="text" className="form-control" value={card_limit} onChange={(e) => setcard_limit(e.target.value)} />
+
+                                        </div>
                                         </> : null}
 
                                     </> : <></>
@@ -366,6 +504,53 @@ function ScbEntry(props) {
                 </div>
             </div>
         </section>
+        <Modal show={showm} onHide={handleClose}>
+        <Modal.Header closeButton>
+            <Modal.Title>Upload Documents</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <div>
+
+            <input type="file" name="image" onChange={(e) => setbank_doc(e.target.files[0]) } />
+            <Button variant="primary" style={{width: "143px"}} onClick={savebank_doc}>
+                Bank Statement
+            </Button>
+            <h5 style={{color:"green"}}>{m1}</h5>
+            </div><br/>
+            <div >
+
+            <input type="file" name="image" onChange={(e) => setsalary_slip(e.target.files[0]) } />
+            <Button variant="primary" style={{width: "143px"}} onClick={savesal_slip}>
+                Salary Slip
+            </Button>
+            <h5 style={{color:"green"}}>{m2}</h5>
+            </div><br/>
+            <div>
+
+            <input type="file" name="image" onChange={(e) => setpan_card(e.target.files[0]) } />
+            <Button variant="primary" style={{width: "143px"}} onClick={savepan}>
+                Pan Card
+            </Button>
+            <h5 style={{color:"green"}}>{m3}</h5>
+            </div><br/>
+            <div>
+
+            <input type="file" name="image" onChange={(e) => setaadhar_card(e.target.files[0]) } />
+            <Button variant="primary" style={{width: "143px"}} onClick={saveaadhar}>
+                Aadhaar
+            </Button>
+            <h5 style={{color:"green"}}>{m4}</h5>
+            </div>
+            
+
+        </Modal.Body>
+        <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+                Close
+            </Button>
+        </Modal.Footer>
+    </Modal>
+    </>
     )
 }
 export default ScbEntry;

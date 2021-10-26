@@ -1,10 +1,12 @@
-import { BsFillTrashFill, BsPersonPlusFill, BsPeopleCircle, BsFillGrid3X3GapFill } from "react-icons/bs"
+import { BsFillTrashFill, BsPersonPlusFill, BsPeopleCircle, BsQuestionOctagonFill } from "react-icons/bs"
 import { Modal } from "react-bootstrap";
 import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import React from "react";
 import axios from 'axios';
+import ReactTooltip from "react-tooltip";
+
 
 import baseUrl from './baseurl';
 
@@ -111,7 +113,7 @@ export default class TableList extends React.Component {
   deleteMe(record) {
     // console.log(record.USER_ID)
     let data = { id: record.USER_ID }
-    if (window.confirm("Delete user " + record.NAME + "?")) {
+    if (window.confirm("Delete user " + record.FIRST_NAME + "?")) {
 
       axios.post(`${baseUrl}/api/delete`, data)
         .then(res => res.json())
@@ -145,7 +147,23 @@ export default class TableList extends React.Component {
       });
     this.setState({ show: true });
   };
+  resetPassword = (record) => {
+    let data = { reset_id: record.USER_ID }
+    if (window.confirm("Reset Password of " + record.FIRST_NAME + "?")) {
+      axios.get(`${baseUrl}/api/reset-password/${record.USER_ID}`)
+        .then(res => res.json())
+        .then(res => {
 
+          console.log(res)
+        })
+        .catch(err => {
+          console.warn(err.msg)
+        });
+      // window.location.reload(false)
+    } else {
+      return false;
+    }
+  }
   addLeader(e) {
 
     // console.log(this.state.tc, this.state.tl, this.user.user_id)
@@ -183,25 +201,28 @@ export default class TableList extends React.Component {
     }
     columns.push({
       title: 'Action', dataIndex: 'Action', width: 'auto', key: 'operation', render: (text, record) => <a>
-        <button><BsFillGrid3X3GapFill /></button>
         {
           this.user.role === 1 ?
-            <>
+          <>
+          <button data-tip data-for="registerTip" onClick={(e) => this.resetPassword(record)}><BsQuestionOctagonFill /></button>
               {
                 this.props.type === 3 ?
                   <>
-                    <span>  </span><button onClick={(e) => this.showModal(record)}><BsPersonPlusFill value={record.USER_ID} /></button>
+                    <span>  </span><button data-tip data-for="mapuser" onClick={(e) => this.showModal(record)}><BsPersonPlusFill /></button>
                   </>
                   :
                   <></>
               }
-              <span>   </span><button onClick={() => this.deleteMe(record)}><BsFillTrashFill value={record.USER_ID} /></button>
+              <span>   </span><button data-tip data-for="delete" onClick={() => this.deleteMe(record)}><BsFillTrashFill /></button>
 
             </>
             :
             <>
             </>
         }
+        <ReactTooltip id="registerTip" place="top" effect="solid">Reset Password</ReactTooltip>
+        <ReactTooltip id="mapuser" place="top" effect="solid">Assing Team Leader</ReactTooltip>
+        <ReactTooltip id="delete" place="top" effect="solid">Delete User</ReactTooltip>
       </a>,
 
     })

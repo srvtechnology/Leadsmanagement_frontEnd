@@ -10,7 +10,7 @@ import { Image, Modal, Button, BsCheckCircle } from "react-bootstrap";
 
 import baseUrl from './baseurl';
 
-function SummarySbi() {
+function SummaryCitiBank() {
     let user = JSON.parse(localStorage.getItem('user-info'))
 
     const colourOptions = [
@@ -38,7 +38,7 @@ function SummarySbi() {
 
     async function showSummaryTc() {
         let user_id = user.user_id;
-        let res = await fetch(`${baseUrl}/api/get-sbi-summary-tc/${user_id}/${startDate}/${endDate}`);
+        let res = await fetch(`${baseUrl}/api/get-citi-summary-tc/${user_id}/${startDate}/${endDate}`);
         res = await res.json();
         console.log(res)
         setData(res)
@@ -49,7 +49,7 @@ function SummarySbi() {
     }
     async function showSummaryTl() {
         let user_id = user.user_id;
-        let res = await fetch(`${baseUrl}/api/get-sbi-summary-tl/${user_id}/${startDate}/${endDate}`);
+        let res = await fetch(`${baseUrl}/api/get-citi-summary-tl/${user_id}/${startDate}/${endDate}`);
         res = await res.json();
         console.log(res)
         setData(res)
@@ -60,7 +60,7 @@ function SummarySbi() {
     }
     async function showSummaryBm() {
         let user_id = user.user_id;
-        let res = await fetch(`${baseUrl}/api/get-sbi-summary-bm/${user_id}/${startDate}/${endDate}`);
+        let res = await fetch(`${baseUrl}/api/get-citi-summary-bm/${user_id}/${startDate}/${endDate}`);
         res = await res.json();
         console.log(res)
         setData(res)
@@ -72,7 +72,7 @@ function SummarySbi() {
     async function showData() {
         setvisible('hidden')
         let user_id = user.user_id;
-        let res = await fetch(`${baseUrl}/api/get-sbi-data/${user_id}/${startDate}/${endDate}`);
+        let res = await fetch(`${baseUrl}/api/get-citi-data/${user_id}/${startDate}/${endDate}`);
         res = await res.json();
         setData(res)
         console.log(res)
@@ -82,18 +82,18 @@ function SummarySbi() {
         }
 
     }
-    async function showDuplicate() {
-        setvisible('hidden')
-        let user_id = user.user_id;
-        let res = await fetch(`${baseUrl}/api/get-sbi-duplicate/${user_id}/${startDate}/${endDate}`);
-        res = await res.json();
-        console.log(res)
-        setData(res)
-        if (res.length > 0) {
-            setKeys(Object.keys(res[0]))
-            setFlag(3)
-        }
-    }
+    // async function showDuplicate() {
+    //     setvisible('hidden')
+    //     let user_id = user.user_id;
+    //     let res = await fetch(`${baseUrl}/api/get-citi-duplicate/${user_id}/${startDate}/${endDate}`);
+    //     res = await res.json();
+    //     console.log(res)
+    //     setData(res)
+    //     if (res.length > 0) {
+    //         setKeys(Object.keys(res[0]))
+    //         setFlag(3)
+    //     }
+    // }
     function showButton() {
         setvisible('visible')
     }
@@ -129,16 +129,16 @@ function SummarySbi() {
                                 <div className="col-md-2">
                                     <Button style={{ width: "100%" }} onClick={showData} type="button" className="btn btn-warning" >Data</Button>
                                 </div>
-                                <div className="col-md-2">
+                                {/* <div className="col-md-2">
                                     <Button style={{ width: "100%" }} onClick={showDuplicate} type="button" className="btn btn-primary" >Duplicate</Button>
-                                </div>
+                                </div> */}
                             </> : <>
                                 <div className="col-md-2">
                                     <Button style={{ width: "100%" }} onClick={showData} type="button" className="btn btn-warning" >Data</Button>
                                 </div>
-                                <div className="col-md-2">
+                                {/* <div className="col-md-2">
                                     <Button style={{ width: "100%" }} onClick={showDuplicate} type="button" className="btn btn-primary" >Duplicate</Button>
-                                </div>
+                                </div> */}
                             </>
                     }
 
@@ -157,7 +157,7 @@ function SummarySbi() {
                         </div>
                     </div><hr /></div>
 
-                <SummaryTable data={data} keys={keys} type={flag} bank="SBI" getDuplicate={showDuplicate} />
+                <SummaryTable data={data} keys={keys} type={flag} bank="CITI"  />
             </div>
         </>
     );
@@ -165,4 +165,4 @@ function SummarySbi() {
 
 }
 
-export default SummarySbi;
+export default SummaryCitiBank;

@@ -66,6 +66,7 @@ function SignUp(props) {
                 <option >Select Bank</option>
                 <option value="SBI">SBI</option>
                 <option value="SCB">SCB</option>
+                <option value="CITI">CITI</option>
                
             </select>
         </div>
@@ -88,7 +89,7 @@ function SignUp(props) {
                         <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} id="inputPassword4" placeholder="Password" /><br />
                     </div>
                     <div className="form-group ">
-                        <input type="text" maxLength="10" value={phone} onChange={(e) => setPhone(e.target.value)} className="form-control" id="inputCity" placeholder="Phone" /><br />
+                        <input type="text" maxLength="10" value={phone} onChange={(e) => setPhone(e.target.value)} className="form-control" id="inputCiti" placeholder="Phone" /><br />
                     </div>
                     <div className="form-group ">
                         <select id="inputState" className="form-control" value={role} onChange={(e) => chooserole(e)}>

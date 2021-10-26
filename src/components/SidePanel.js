@@ -5,8 +5,9 @@ import { AiOutlineBars } from "react-icons/ai"
 import { useHistory } from "react-router-dom";
 import { BsPeopleCircle, BsGraphUp, BsPencilSquare, BsForwardFill, BsWrench } from "react-icons/bs"
 import { NavDropdown } from "react-bootstrap";
-import SBI from "./SBI.png"
-import SCB from "./SCB.png"
+import SBI from "./SBI.png";
+import SCB from "./SCB.png";
+import CITI from "./CITI.png";
 
 import baseUrl from './baseurl';
 function SidePanel() {
@@ -68,6 +69,9 @@ function SidePanel() {
                             <Nav.Item>
                                 <Nav.Link href="/tele-caller" >Tele Callers</Nav.Link><hr />
                             </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link href="/bank-person" >Bank Person</Nav.Link><hr />
+                            </Nav.Item>
                             </>
                                 : user.role === 2 ? <>
                                 <Nav.Item>
@@ -92,6 +96,13 @@ function SidePanel() {
                                     <NavDropdown.Item href="/scb-summary"><BsGraphUp /> SCB Summary</NavDropdown.Item>
                                 </NavDropdown>
                             </Nav.Item><hr />
+                            </> : user.bank == "CITI" && user.role == 4 ? <>
+                            <Nav.Item>
+                                <NavDropdown className="cap" title={<><img src={CITI} style={{ height: "20px" }} /></>}>
+                                    <NavDropdown.Item href="/Citi-bank-entry"><BsPencilSquare /> Citi Bank Entry</NavDropdown.Item>
+                                    <NavDropdown.Item href="/Citi-bank-summary"><BsGraphUp /> Citi Bank Summary</NavDropdown.Item>
+                                </NavDropdown>
+                            </Nav.Item><hr />
                         </> : user.bank == null ? <>
                             <Nav.Item>
                                 <NavDropdown className="cap" title={<><img src={SBI} style={{ height: "20px" }} /> SBI</>}>
@@ -104,6 +115,12 @@ function SidePanel() {
                                 <NavDropdown className="cap" title={<><img src={SCB} style={{ height: "20px" }} /> SCB</>}>
                                     <NavDropdown.Item href="/scb-entry"><BsPencilSquare /> SCB Entry</NavDropdown.Item>
                                     <NavDropdown.Item href="/scb-summary"><BsGraphUp /> SCB Summary</NavDropdown.Item>
+                                </NavDropdown>
+                            </Nav.Item><hr />
+                            <Nav.Item>
+                                <NavDropdown className="cap" title={<><img src={CITI} style={{ height: "20px" }} /></>}>
+                                    <NavDropdown.Item href="/Citi-bank-entry"><BsPencilSquare /> Citi Bank Entry</NavDropdown.Item>
+                                    <NavDropdown.Item href="/Citi-bank-summary"><BsGraphUp /> Citi Bank Summary</NavDropdown.Item>
                                 </NavDropdown>
                             </Nav.Item><hr />
                         </> : <></>

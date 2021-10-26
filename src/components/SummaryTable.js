@@ -19,6 +19,7 @@ export default class SummaryTable extends React.Component {
     super(props);
     this.panAccept = this.panAccept.bind(this);
     this.panReject = this.panReject.bind(this);
+    this.deletelead = this.deletelead.bind(this);
     this.state = {
       show: false,
       searchText: '',
@@ -27,11 +28,11 @@ export default class SummaryTable extends React.Component {
       list: [],
       tc: '',
       tl: '',
+      tableData:'',
       redirect: null
     };
     this.user = JSON.parse(localStorage.getItem('user-info'))
   }
-
   // this.deleteMe = this.deleteMe.bind(this);
   getColumnSearchProps = dataIndex => ({
     filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -110,99 +111,141 @@ export default class SummaryTable extends React.Component {
     clearFilters();
     this.setState({ searchText: '' });
   };
-
-  panReject(record) {
-    console.log(record, "reject")
-    let data = { lead_id: record.ID, code:0 }
-    if (window.confirm("Reject PAN for " + record.NAME + "?")) {
-
-      axios.post(`${baseUrl}/api/bm-pan-sbi`, data)
-        .then(res => res.json())
-        .then(res => {
-          console.log(res)
-
-        })
-        .catch(err => {
-          console.warn(err.msg)
-        });
-      // this.setState({});
-      window.location.reload(false)
-    } else {
-      return false;
-    }
-  }
   onCloseModal = () => {
     this.setState({ show: false })
   }
-  panAccept = (record) => {
 
-    // this.setState({ tc: record.USER_ID })
-    console.log(record, "accept")
-    let data = { lead_id: record.ID, code:1 }
-    if (window.confirm("Confirm PAN for " + record.NAME + "?")) {
-
+  panReject=(record,props)=> {
+    // console.log(record, "reject")
+    let data = { lead_id: record.ID, code:0 }
+    this.state.tableData="dwwk"
+    console.log(this.props.tableData);
+    if (window.confirm("Reject PAN for " + record.FIRST_NAME + "?")) {
+      
       axios.post(`${baseUrl}/api/bm-pan-sbi`, data)
-        .then(res => res.json())
-        .then(res => {
-          console.log(res)
-
-        })
-        .catch(err => {
-          console.warn(err.msg)
-        });
-      // this.setState({});
-      window.location.reload(false)
+      .then(function (res) {
+        console.log(res.data);
+        props.getDuplicate()
+      })
+      .catch(function (res) {
+        console.log(res);
+      });
+      
     } else {
       return false;
     }
+  }
+  
+  
+  panAccept = (record,props) => {
+
+    // this.setState({ tc: record.USER_ID })
+    // console.log(record, "accept")
+    let data = { lead_id: record.ID, code:1 }
+    if (window.confirm("Confirm PAN for " + record.FIRST_NAME + "?")) {
+
+      axios.post(`${baseUrl}/api/bm-pan-sbi`, data)
+      .then(function (res) {
+        console.log(res.data);
+        props.getDuplicate()
+      })
+      .catch(function (res) {
+        console.log(res);
+      });
+       
+      } else {
+        return false;
+      }
   };
 
  
+  deletelead=(record,props)=> {
+    // console.log(record.USER_ID)
+    let data = { id: record.ID }
+    if (window.confirm("Delete user " + record.FIRST_NAME + "?")) {
+
+      axios.post(`${baseUrl}/api/delete-sbi-lead`, data)
+      .then(function (res) {
+        console.log(res.data);
+        props.getDuplicate()
+      })
+      .catch(function (res) {
+        console.log(res);
+      });
+      
+    } else {
+      return false;
+    }
+  }
 
 
   render() {
 
     const columns = [];
     // this.props.keys.push("ACTION")
+    const data= [];
+    var a=0;var b=0;var c=0; var d=0;var e=0;var f=0;var g=0;var h=0;var i=0;
+    for (var j = 0; j < this.props.data.length; j++) {
+      data.push(this.props.data[j])
+      if(this.props.type === 1){
+      a+=this.props.data[j].Verification_pending
+      b+=this.props.data[j].QD
+      c+=this.props.data[j].App_code_pending
+      d+=this.props.data[j].App_code_received
+      e+=this.props.data[j].Need_correction
+      f+=this.props.data[j].Decline
+      g+=this.props.data[j].Approve
+      h+=this.props.data[j].e_KYC_Done
+      i+=this.props.data[j].Card_booked
+      }
+    }
+    if(this.props.type === 1){
+      data.push({TC:'',TL:'',BM:<h3>TOTAL</h3>,Verification_pending:<h3>{a}</h3>,QD:<h3>{b}</h3>,App_code_pending:<h3>{c}</h3>,App_code_received:<h3>{d}</h3>,
+      Need_correction:<h3>{e}</h3>,Decline:<h3>{f}</h3>,Approve:<h3>{g}</h3>,e_KYC_Done:<h3>{h}</h3>,Card_booked:<h3>{i}</h3>})
+    }
     for (var i = 0; i < this.props.keys.length; i++) {
       var id = i
-      if (this.props.keys[i] === 'STATUS' && this.props.type === 1) {
-        columns.push({
-          title: this.props.keys[i],
-          dataIndex: this.props.keys[i],
-          key: this.props.keys[i],
-          width: 'auto',
-          fixed: 'right',
-          ...this.getColumnSearchProps(this.props.keys[i]),
-          render: text => <>
-          {
-            text == "App Code Pending" ?
-            <>
-            <p style={{ fontWeight:"bold", color:"#ffca00"}}>{text}</p>
-            </>:text == "Pending for verification" ?
-            <>
-            <p style={{ fontWeight:"bold", color:"#ff6b00"}}>{text}</p>
-            </>:text == "Need Correction" ?
-            <>
-            <p style={{ fontWeight:"bold", color:"crimson"}}>{text}</p>
-            </>:text == "App Code Received" ?
-            <>
-            <p style={{ fontWeight:"bold", color:"blue"}}>{text}</p>
-            </>:text == "Approve" ?
-            <>
-            <p style={{ fontWeight:"bold", color:"green"}}>{text}</p>
-            </>:text == "Decline" ?
-            <>
-            <p style={{ fontWeight:"bold", color:"red"}}>{text}</p>
-            </>:text == "Card Booked" ?
-            <>
-            <p style={{ fontWeight:"bold", color:"darkgreen"}}>{text}</p>
-            </>:
-            <></>
-          }
-          </>,
-        })
-      }else if(this.props.keys[i] === 'STATUS'  && this.props.type === 2){
+      // if (this.props.keys[i] === 'STATUS' && this.props.type === 1) {
+      //   columns.push({
+      //     title: this.props.keys[i],
+      //     dataIndex: this.props.keys[i],
+      //     key: this.props.keys[i],
+      //     width: 'auto',
+      //     fixed: 'right',
+      //     ...this.getColumnSearchProps(this.props.keys[i]),
+      //     render: text => <>
+      //     {
+      //       text == "App Code Pending" ?
+      //       <>
+      //       <p style={{ fontWeight:"bold", color:"#ffca00"}}>{text}</p>
+      //       </>:text == "QD Pending" ?
+      //       <>
+      //       <p style={{ fontWeight:"bold", color:"#ff6b00"}}>{text}</p>
+      //       </>:text == "Need Correction" ?
+      //       <>
+      //       <p style={{ fontWeight:"bold", color:"crimson"}}>{text}</p>
+      //       </>:text == "App Code Not Received" ?
+      //       <>
+      //       <p style={{ fontWeight:"bold", color:"blue"}}>{text}</p>
+      //       </>:text == "App Code Not Received" ?
+      //       <>
+      //       <p style={{ fontWeight:"bold", color:"rebeccapurple"}}>{text}</p>
+      //       </>:text == "Approve" ?
+      //       <>
+      //       <p style={{ fontWeight:"bold", color:"green"}}>{text}</p>
+      //       </>:text == "Decline" ?
+      //       <>
+      //       <p style={{ fontWeight:"bold", color:"red"}}>{text}</p>
+      //       </>:text == "Card Booked" ?
+      //       <>
+      //       <p style={{ fontWeight:"bold", color:"darkgreen"}}>{text}</p>
+      //       </>:
+      //       <></>
+      //     }
+      //     </>,
+      //   })
+      // }else 
+      if(this.props.keys[i] === 'STATUS'  && this.props.type === 2){
         columns.push({
           title: 'STATUS',
           dataIndex: 'STATUS',
@@ -211,7 +254,7 @@ export default class SummaryTable extends React.Component {
             text == "App Code Pending" ?
             <>
             <p style={{ fontWeight:"bold",color:"#ffca00"}}>{text}</p>
-            </>:text == "Pending for verification" ?
+            </>:text == "QD Pending" ?
             <>
             <p style={{ fontWeight:"bold",color:"#ff6b00"}}>{text}</p>
             </>:text == "QD" ?
@@ -223,12 +266,24 @@ export default class SummaryTable extends React.Component {
             </>:text == "App Code Received" ?
             <>
             <p style={{ fontWeight:"bold",color:"blue"}}>{text}</p>
+            </>:text == "App Code Not Received" ?
+            <>
+            <p style={{ fontWeight:"bold", color:"rebeccapurple"}}>{text}</p>
+            </>:text == "e-KYC Done" ?
+            <>
+            <p style={{ fontWeight:"bold",color:"greenyellow"}}>{text}</p>
             </>:text == "Approve" ?
             <>
             <p style={{ fontWeight:"bold",color:"green"}}>{text}</p>
             </>:text == "Decline" ?
             <>
             <p style={{ fontWeight:"bold",color:"red"}}>{text}</p>
+            </>:text == "Card Reject" ?
+            <>
+            <p style={{ fontWeight:"bold",color:"red"}}>{text}</p>
+            </>:text == "Verification Pending" ?
+            <>
+            <p style={{ fontWeight:"bold",color:"#ff6b00"}}>{text}</p>
             </>:text == "Card Booked" ?
             <>
             <p style={{ fontWeight:"bold",color:"darkgreen"}}>{text}</p>
@@ -303,8 +358,9 @@ export default class SummaryTable extends React.Component {
               {
                 this.user.role === 1 || this.user.role === 4 ? 
                 <>
-                <span>  </span><button onClick={(e) => this.panAccept(record)}><BsCheckCircle /></button>
-                <span>   </span><button onClick={() => this.panReject(record)}><BsXCircle /></button>
+                <span>  </span><button onClick={(e) => this.panAccept(record,this.props)}><BsCheckCircle /></button>
+                <span>   </span><button onClick={() => this.panReject(record,this.props)}><BsXCircle /></button>
+                <span>   </span><button data-tip data-for="delete" onClick={() => this.deletelead(record,this.props)}><BsFillTrashFill /></button>
                 { this.props.bank === 'SBI' && record.STATUS === 'OK'? <>
                     <span>  </span>
                   <Link to={`/edit-sbi-entry/${record.ID}`}><button data-tip data-for="registerTip"><BsPencilSquare /></button></Link>
@@ -337,6 +393,10 @@ export default class SummaryTable extends React.Component {
                   <>
                   <span>  </span>
                   <Link to={`/edit-scb-entry/${record.ID}`}><button data-tip data-for="registerTip"><BsPencilSquare /></button></Link>
+                  </> : this.props.bank === 'CITI'? 
+                  <>
+                  <span>  </span>
+                  <Link to={`/edit-citi-bank-entry/${record.ID}`}><button data-tip data-for="registerTip"><BsPencilSquare /></button></Link>
                   </>:<></>}
                 </> :
                 this.props.type === 1 && this.user.role === 2 ?
@@ -365,11 +425,13 @@ export default class SummaryTable extends React.Component {
 
         {
           this.props.type === 1 ?
-            <><Table columns={columns} dataSource={this.props.data} bordered scroll={{ x: 1700, y: 500 }} /></>
+            <>
+            
+            <Table columns={columns} dataSource={data} bordered scroll={{ x: 2000, y: 500 }} /></>
             :this.props.type === 2 ? <>
-            <Table columns={columns} dataSource={this.props.data} bordered backgroundColor="#bab2b2" scroll={{ x: 2500, y: 500 }} /></>
+            <Table columns={columns} dataSource={data} bordered backgroundColor="#bab2b2" scroll={{ x: 2500, y: 500 }} /></>
             :<>
-            <Table columns={columns} dataSource={this.props.data} bordered backgroundColor="#bab2b2" scroll={{ x: 1300, y: 500 }} /></>
+            <Table columns={columns} dataSource={data} bordered backgroundColor="#bab2b2" scroll={{ x: 1300, y: 500 }} /></>
             
         }
         

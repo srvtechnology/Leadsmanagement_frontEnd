@@ -145,3 +145,6 @@ body, html, .App, #root, .auth-wrapper {
       .main-form label{
         font-weight: 600;
       }
+.ant-table-thead{
+  opaCiti: 0.9;
+}

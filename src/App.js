@@ -18,6 +18,9 @@ import SummarySbi from './components/SummarySbi';
 import SummaryScb from './components/SummaryScb';
 import SbiEntryForm from './components/SbiEntryForm';
 import ResetPass from './components/ResetPass';
+import BankPerson from './components/BankPerson';
+import CitiBankForm from './components/CitiBankForm';
+import SummaryCitiBank from './components/SummaryCitiBank';
 
 
 function App(props) {
@@ -41,19 +44,23 @@ function App(props) {
         <Switch>
         <Route path="/login" component={Login} />
         <Route path="/signUp" component={SignUp} />
+        <Route path="/reset-password" component={ResetPass} />
         <Route path="/edit-profile" component={EditProfile} />
         <Route path="/home" component={Home} />
         <Route path="/about-us" component={AboutUs} />
         <Route path="/contact-us" component={ContactUs} />
         <Route path="/team-leader" component={TeamLeader} />
         <Route path="/tele-caller" component={TeleCaller} />
+        <Route path="/bank-person" component={BankPerson} />
         <Route path="/scb-entry" component={ScbEntry} />
         <Route path="/sbi-entry" component={SbiEntry} />
-        <Route path="/edit-sbi-entry/:id" component={SbiEntryForm} />
-        <Route path="/edit-scb-entry/:id" component={ScbEntry} />
+        <Route path="/Citi-bank-entry" component={CitiBankForm} />
         <Route path="/scb-summary" component={SummaryScb} />
         <Route path="/sbi-summary" component={SummarySbi} />
-        <Route path="/reset-password" component={ResetPass} />
+        <Route path="/Citi-bank-summary" component={SummaryCitiBank} />
+        <Route path="/edit-sbi-entry/:id" component={SbiEntryForm} />
+        <Route path="/edit-scb-entry/:id" component={ScbEntry} />
+        <Route path="/edit-citi-bank-entry/:id" component={CitiBankForm} />
         </Switch>
       
       </Router>

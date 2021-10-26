@@ -3,6 +3,7 @@ import { Link, useHistory } from "react-router-dom";
 import { BsPeopleCircle, BsGraphUp, BsPencilSquare, BsForwardFill, BsWrench } from "react-icons/bs"
 import SBI from "./SBI.png"
 import SCB from "./SCB.png"
+import CITI from "./CITI.png";
 import SidePanel from "./SidePanel";
 import baseUrl from './baseurl';
 // import Login from "./Login";
@@ -58,6 +59,11 @@ function Header(Props) {
                                             <NavDropdown.Item href="/scb-entry"><BsPencilSquare /> SCB Entry</NavDropdown.Item>
                                             <NavDropdown.Item href="/scb-summary"><BsGraphUp /> SCB Summary</NavDropdown.Item>
                                         </NavDropdown>
+                                    </> : user.bank == "CITI" && user.role == 4 ? <>
+                                            <NavDropdown className="cap" title={<><img src={CITI} style={{ height: "20px" }} /></>}>
+                                                <NavDropdown.Item href="/Citi-bank-entry"><BsPencilSquare /> Citi Bank Entry</NavDropdown.Item>
+                                                <NavDropdown.Item href="/Citi-bank-summary"><BsGraphUp /> Citi Bank Summary</NavDropdown.Item>
+                                            </NavDropdown>
                                     </> : user.bank == null ? <>
                                         <NavDropdown className="cap" title={<><img src={SBI} style={{ height: "20px" }} alt="SBI" /> SBI</>}>
                                             <NavDropdown.Item href="/sbi-entry"><BsPencilSquare /> SBI Entry</NavDropdown.Item>
@@ -67,6 +73,10 @@ function Header(Props) {
                                             <NavDropdown.Item href="/scb-entry"><BsPencilSquare /> SCB Entry</NavDropdown.Item>
                                             <NavDropdown.Item href="/scb-summary"><BsGraphUp /> SCB Summary</NavDropdown.Item>
                                         </NavDropdown>
+                                        <NavDropdown className="cap" title={<><img src={CITI} style={{ height: "20px" }} /></>}>
+                                                <NavDropdown.Item href="/Citi-bank-entry"><BsPencilSquare /> Citi Bank Entry</NavDropdown.Item>
+                                                <NavDropdown.Item href="/Citi-bank-summary"><BsGraphUp /> Citi Bank Summary</NavDropdown.Item>
+                                            </NavDropdown>
                                     </> : <></>
 
                                     }

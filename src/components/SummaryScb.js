@@ -9,6 +9,8 @@ import baseUrl from './baseurl';
 
 
 function ContactUs() {
+    let user = JSON.parse(localStorage.getItem('user-info'))
+
     const colourOptions = [
         { value: "ocean1", label: "Ocean" },
         { value: "blue", label: "Blue" },
@@ -34,7 +36,8 @@ function ContactUs() {
     const [startDate, setStartDate] = useState(new Date());
     const [flag, setFlag] = useState(0)
     async function showSummary(){
-        let res = await fetch(`${baseUrl}/api/get-scb-summary`);
+        let user_id = user.user_id;
+        let res = await fetch(`${baseUrl}/api/get-scb-summary/${user_id}`);
         res = await res.json();
         setData(res)
         if(res.length >0){
@@ -43,7 +46,8 @@ function ContactUs() {
         }        
     }
     async function showData(){
-        let res = await fetch(`${baseUrl}/api/get-scb-data`);
+        let user_id = user.user_id;
+        let res = await fetch(`${baseUrl}/api/get-scb-data/${user_id}`);
         res = await res.json();
         console.log(res)
         setData(res)

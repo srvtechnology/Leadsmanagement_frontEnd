@@ -7,11 +7,11 @@ import baseUrl from './baseurl';
 function EditProfile() {
     let user = JSON.parse(localStorage.getItem('user-info'))
     const history = useHistory()
-    useEffect(() => {
+    // useEffect(() => {
         if (!localStorage.getItem('user-info')) {
             history.push("/login")
         }
-    })
+    // })
     const [name, setName] = useState(user.name)
     const [email, setEmail] = useState(user.email)
     const [phone, setPhone] = useState(user.phone)
@@ -25,6 +25,7 @@ function EditProfile() {
     // const history = useHistory()
 
     function update(props) {
+        
         let data = { id, name, email, phone, role, aadhar, pan }
 
         fetch(`${baseUrl}/api/update`,
@@ -43,8 +44,7 @@ function EditProfile() {
                 setMessage("Data Updated Succesfully!")
                 // localStorage.clear()
                 localStorage.setItem("user-info", JSON.stringify(res.user))
-                // history.push("/home")
-
+                window.location.reload(false)
 
             })
             .catch(err => {
@@ -98,9 +98,12 @@ function EditProfile() {
                             </div>
 
                             <div className="form-group ">
-                                <input type="text" maxLength="10" value={phone} onChange={(e) => setPhone(e.target.value)} className="form-control" id="inputCity" placeholder="Phone" /><br />
+                                <input type="text" maxLength="10" value={phone} onChange={(e) => setPhone(e.target.value)} className="form-control" id="inputCiti" placeholder="Phone" /><br />
                             </div>
-                            <div className="form-group ">
+                           {/* {
+                               user.role===1?
+                               <>
+                                <div className="form-group ">
                                 <select id="inputState" className="form-control" value={role} onChange={(e) => setRole(e.target.value)}>
                                     <option >Select Role</option>
                                     <option value="1">Branch Manager</option>
@@ -108,6 +111,8 @@ function EditProfile() {
                                     <option value="3">Tele Caller</option>
                                 </select>
                             </div><br />
+                               </>:null
+                           } */}
                             <div className="form-group ">
                                 <input type="text" maxLength="12" className="form-control" value={aadhar} onChange={(e) => setaadhar(e.target.value)} id="inputName4" placeholder="Aadhaar" /><br />
                             </div>
