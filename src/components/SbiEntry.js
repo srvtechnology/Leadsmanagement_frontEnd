@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaTimes, FaArrowRight } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
+import { Carousel } from "react-bootstrap"
 import baseUrl from './baseurl';
 
 function SbiEntry(props) {
@@ -9,10 +10,10 @@ function SbiEntry(props) {
     const [msg, setMsg] = useState('');
     const [checkPan, setcheckPan] = useState('');
     const [checkName, setcheckName] = useState('')
-    
-    
+
+
     function handleCheck() {
-        let data = { checkPan, checkName, tc:user.user_id }
+        let data = { checkPan, checkName, tc: user.user_id }
         console.log(data)
         fetch(`${baseUrl}/api/lead-check-sbi`,
             {
@@ -37,12 +38,12 @@ function SbiEntry(props) {
 
             });
     }
-    
+
     return (
         <section style={{ marginTop: "80px" }}>
             <div className="container p-3">
 
-                <h1>Check Duplicate Entry</h1><hr/>
+                <h1>Check Duplicate Entry</h1><hr />
                 <div className="main-form row">
                     <div className="mb-3 col-md-6 col-12">
                         <label className="form-label">PAN</label>
@@ -57,9 +58,39 @@ function SbiEntry(props) {
                     <button type="button" onClick={() => handleCheck()} className="btn btn-primary">Submit</button>
                 </div><br />
                 <h3 style={{ color: "#f30d0d" }}>{msg}</h3>
-
-               
             </div>
+            <div className="container">
+
+                <Carousel>
+                    <Carousel.Item interval={1000}>
+                        <img src={baseUrl + `/asset/fbb.jpg`} className="d-block w-100" alt="Second slide" />
+
+                        <Carousel.Caption>
+                        </Carousel.Caption>
+                    </Carousel.Item>
+                    <Carousel.Item interval={1000}>
+                        <img src={baseUrl + `/asset/prime.jpg`} className="d-block w-100" alt="Second slide" />
+                        <Carousel.Caption>
+                        </Carousel.Caption>
+                    </Carousel.Item>
+                    <Carousel.Item interval={1000}>
+                        <img src={baseUrl + `/asset/s_save.jpg`} className="d-block w-100" alt="Second slide" />
+                        <Carousel.Caption>
+                        </Carousel.Caption>
+                    </Carousel.Item>
+                    <Carousel.Item interval={1000}>
+                        <img src={baseUrl + `/asset/s_click.jpg`} className="d-block w-100" alt="Second slide" />
+                        <Carousel.Caption>
+                        </Carousel.Caption>
+                    </Carousel.Item>
+                    <Carousel.Item interval={1000}>
+                        <img src={baseUrl + `/asset/air_india.jpg`} className="d-block w-100" alt="Second slide" />
+                        <Carousel.Caption>
+                        </Carousel.Caption>
+                    </Carousel.Item>
+                </Carousel>
+            </div>
+
         </section>
     )
 }

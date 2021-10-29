@@ -1,9 +1,6 @@
 import { NavDropdown, Navbar, Nav } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import { BsPeopleCircle, BsGraphUp, BsPencilSquare, BsForwardFill, BsWrench } from "react-icons/bs"
-import SBI from "./SBI.png"
-import SCB from "./SCB.png"
-import CITI from "./CITI.png";
 import SidePanel from "./SidePanel";
 import baseUrl from './baseurl';
 // import Login from "./Login";
@@ -50,33 +47,38 @@ function Header(Props) {
                             localStorage.getItem('user-info') ?
                                 <>
                                     {user.bank == "SBI" && user.role == 4 ? <>
-                                        <NavDropdown className="cap" title={<><img src={SBI} style={{ height: "20px" }} alt="SBI" /> SBI</>}>
-                                            <NavDropdown.Item href="/sbi-entry"><BsPencilSquare /> SBI Entry</NavDropdown.Item>
+                                        <NavDropdown className="cap" title={<><img src={baseUrl + `/asset/SBI.png`} style={{ height: "20px" }} alt="SBI" /> SBI</>}>
                                             <NavDropdown.Item href="/sbi-summary"><BsGraphUp /> SBI Summary</NavDropdown.Item>
                                         </NavDropdown>
                                     </> : user.bank == "SCB" && user.role == 4 ? <>
-                                        <NavDropdown className="cap" title={<><img src={SCB} style={{ height: "20px" }} alt="SCB" /> SCB</>}>
-                                            <NavDropdown.Item href="/scb-entry"><BsPencilSquare /> SCB Entry</NavDropdown.Item>
+                                        <NavDropdown className="cap" title={<><img src={baseUrl + `/asset/SCB.png`} style={{ height: "20px" }} alt="SCB" /> SCB</>}>
                                             <NavDropdown.Item href="/scb-summary"><BsGraphUp /> SCB Summary</NavDropdown.Item>
                                         </NavDropdown>
                                     </> : user.bank == "CITI" && user.role == 4 ? <>
-                                            <NavDropdown className="cap" title={<><img src={CITI} style={{ height: "20px" }} /></>}>
-                                                <NavDropdown.Item href="/Citi-bank-entry"><BsPencilSquare /> Citi Bank Entry</NavDropdown.Item>
+                                            <NavDropdown className="cap" title={<><img src={baseUrl + `/asset/CITI.png`} style={{ height: "20px" }} /></>}>
                                                 <NavDropdown.Item href="/Citi-bank-summary"><BsGraphUp /> Citi Bank Summary</NavDropdown.Item>
                                             </NavDropdown>
+                                    </> : user.bank == "HDFC" && user.role == 4 ? <>
+                                    <NavDropdown className="cap" title={<><img src={baseUrl + `/asset/CITI.png`} style={{ height: "20px" }} /></>}>
+                                        <NavDropdown.Item href="/hdfc-bank-summary"><BsGraphUp /> HDFC Bank Summary</NavDropdown.Item>
+                                    </NavDropdown>
                                     </> : user.bank == null ? <>
-                                        <NavDropdown className="cap" title={<><img src={SBI} style={{ height: "20px" }} alt="SBI" /> SBI</>}>
+                                        <NavDropdown className="cap" title={<><img src={baseUrl + `/asset/SBI.png`} style={{ height: "20px" }} alt="SBI" /> SBI</>}>
                                             <NavDropdown.Item href="/sbi-entry"><BsPencilSquare /> SBI Entry</NavDropdown.Item>
                                             <NavDropdown.Item href="/sbi-summary"><BsGraphUp /> SBI Summary</NavDropdown.Item>
                                         </NavDropdown>
-                                        <NavDropdown className="cap" title={<><img src={SCB} style={{ height: "20px" }} alt="SCB" /> SCB</>}>
+                                        <NavDropdown className="cap" title={<><img src={baseUrl + `/asset/SCB.png`} style={{ height: "20px" }} alt="SCB" /> SCB</>}>
                                             <NavDropdown.Item href="/scb-entry"><BsPencilSquare /> SCB Entry</NavDropdown.Item>
                                             <NavDropdown.Item href="/scb-summary"><BsGraphUp /> SCB Summary</NavDropdown.Item>
                                         </NavDropdown>
-                                        <NavDropdown className="cap" title={<><img src={CITI} style={{ height: "20px" }} /></>}>
+                                        <NavDropdown className="cap" title={<><img src={baseUrl + `/asset/CITI.png`} style={{ height: "20px" }} /></>}>
                                                 <NavDropdown.Item href="/Citi-bank-entry"><BsPencilSquare /> Citi Bank Entry</NavDropdown.Item>
                                                 <NavDropdown.Item href="/Citi-bank-summary"><BsGraphUp /> Citi Bank Summary</NavDropdown.Item>
-                                            </NavDropdown>
+                                        </NavDropdown>
+                                        <NavDropdown className="cap" title={<><img src={baseUrl + `/asset/HDFC.png`} style={{ height: "20px" }} /> HDFC</>}>
+                                                <NavDropdown.Item href="/hdfc-bank-entry"><BsPencilSquare /> HDFC Bank Entry</NavDropdown.Item>
+                                                <NavDropdown.Item href="/hdfc-bank-summary"><BsGraphUp /> HDFC Bank Summary</NavDropdown.Item>
+                                        </NavDropdown>
                                     </> : <></>
 
                                     }

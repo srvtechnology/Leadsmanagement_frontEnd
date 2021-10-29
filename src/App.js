@@ -21,6 +21,8 @@ import ResetPass from './components/ResetPass';
 import BankPerson from './components/BankPerson';
 import CitiBankForm from './components/CitiBankForm';
 import SummaryCitiBank from './components/SummaryCitiBank';
+import HdfcBankForm from './components/HdfcBankForm';
+import SummaryHdfc from './components/SummaryHdfc';
 
 
 function App(props) {
@@ -52,15 +54,22 @@ function App(props) {
         <Route path="/team-leader" component={TeamLeader} />
         <Route path="/tele-caller" component={TeleCaller} />
         <Route path="/bank-person" component={BankPerson} />
+
         <Route path="/scb-entry" component={ScbEntry} />
         <Route path="/sbi-entry" component={SbiEntry} />
         <Route path="/Citi-bank-entry" component={CitiBankForm} />
+        <Route path="/hdfc-bank-entry" component={HdfcBankForm} />
+
         <Route path="/scb-summary" component={SummaryScb} />
         <Route path="/sbi-summary" component={SummarySbi} />
         <Route path="/Citi-bank-summary" component={SummaryCitiBank} />
+        <Route path="/hdfc-bank-summary" component={SummaryHdfc} />
+
         <Route path="/edit-sbi-entry/:id" component={SbiEntryForm} />
         <Route path="/edit-scb-entry/:id" component={ScbEntry} />
         <Route path="/edit-citi-bank-entry/:id" component={CitiBankForm} />
+        <Route path="/edit-hdfc-bank-entry/:id" component={HdfcBankForm} />
+
         </Switch>
       
       </Router>

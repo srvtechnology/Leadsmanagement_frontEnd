@@ -21,10 +21,10 @@ function SummarySbi() {
 
     ];
     const date =new Date();
-    const day = date.getDate();const day1 = date.getDate()-1;const month= date.getMonth() + 1;const year = date.getFullYear();
-    const yesterday = year+'-'+month+'-'+day1
+    const day = date.getDate();const day1 = date.getDate()-(day-1);const month= date.getMonth() + 1;const year = date.getFullYear();
+    const yesterday = year+'-'+month+'-0'+day1
     const today = year+'-'+month+'-'+day
-    const [startDate, setStartDate] = useState(today);
+    const [startDate, setStartDate] = useState(yesterday);
     const [endDate, setEndDate] = useState(today);
     const [keys, setKeys] = useState([])
     const [data, setData] = useState([])

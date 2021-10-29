@@ -10,7 +10,7 @@ import { Image, Modal, Button, BsCheckCircle } from "react-bootstrap";
 
 import baseUrl from './baseurl';
 
-function SummaryCitiBank() {
+function SummaryHdfc() {
     let user = JSON.parse(localStorage.getItem('user-info'))
 
     const colourOptions = [
@@ -39,7 +39,7 @@ function SummaryCitiBank() {
 
     async function showSummaryTc() {
         let user_id = user.user_id;
-        let res = await fetch(`${baseUrl}/api/get-citi-summary-tc/${user_id}/${startDate}/${endDate}`);
+        let res = await fetch(`${baseUrl}/api/get-hdfc-summary-tc/${user_id}/${startDate}/${endDate}`);
         res = await res.json();
         console.log(res)
         setData(res)
@@ -50,7 +50,7 @@ function SummaryCitiBank() {
     }
     async function showSummaryTl() {
         let user_id = user.user_id;
-        let res = await fetch(`${baseUrl}/api/get-citi-summary-tl/${user_id}/${startDate}/${endDate}`);
+        let res = await fetch(`${baseUrl}/api/get-hdfc-summary-tl/${user_id}/${startDate}/${endDate}`);
         res = await res.json();
         console.log(res)
         setData(res)
@@ -61,7 +61,7 @@ function SummaryCitiBank() {
     }
     async function showSummaryBm() {
         let user_id = user.user_id;
-        let res = await fetch(`${baseUrl}/api/get-citi-summary-bm/${user_id}/${startDate}/${endDate}`);
+        let res = await fetch(`${baseUrl}/api/get-hdfc-summary-bm/${user_id}/${startDate}/${endDate}`);
         res = await res.json();
         console.log(res)
         setData(res)
@@ -73,7 +73,7 @@ function SummaryCitiBank() {
     async function showData() {
         setvisible('hidden')
         let user_id = user.user_id;
-        let res = await fetch(`${baseUrl}/api/get-citi-data/${user_id}/${startDate}/${endDate}`);
+        let res = await fetch(`${baseUrl}/api/get-hdfc-data/${user_id}/${startDate}/${endDate}`);
         res = await res.json();
         setData(res)
         console.log(res)
@@ -86,7 +86,7 @@ function SummaryCitiBank() {
     // async function showDuplicate() {
     //     setvisible('hidden')
     //     let user_id = user.user_id;
-    //     let res = await fetch(`${baseUrl}/api/get-citi-duplicate/${user_id}/${startDate}/${endDate}`);
+    //     let res = await fetch(`${baseUrl}/api/get-hdfc-duplicate/${user_id}/${startDate}/${endDate}`);
     //     res = await res.json();
     //     console.log(res)
     //     setData(res)
@@ -158,7 +158,7 @@ function SummaryCitiBank() {
                         </div>
                     </div><hr /></div>
 
-                <SummaryTable data={data} keys={keys} type={flag} bank="CITI" getData={showData}  />
+                <SummaryTable data={data} keys={keys} type={flag} bank="HDFC" getData={showData} />
             </div>
         </>
     );
@@ -166,4 +166,4 @@ function SummaryCitiBank() {
 
 }
 
-export default SummaryCitiBank;
+export default SummaryHdfc;

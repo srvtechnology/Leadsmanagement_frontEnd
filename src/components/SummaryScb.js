@@ -33,11 +33,39 @@ function ContactUs() {
         setKeys(Object.keys(res[0]))
 
     }, [])
-    const [startDate, setStartDate] = useState(new Date());
-    const [flag, setFlag] = useState(0)
-    async function showSummary(){
+    const date =new Date();
+    const day = date.getDate();const day1 = date.getDate()-(day-1);const month= date.getMonth() + 1;const year = date.getFullYear();
+    const yesterday = year+'-'+month+'-0'+day1
+    const today = year+'-'+month+'-'+day
+    const [startDate, setStartDate] = useState(yesterday);
+    const [endDate, setEndDate] = useState(today);    const [flag, setFlag] = useState(0)
+    const [visible, setvisible] = useState('hidden');
+    function showButton() {
+        setvisible('visible')
+    }
+    async function showSummaryTc(){
         let user_id = user.user_id;
-        let res = await fetch(`${baseUrl}/api/get-scb-summary/${user_id}`);
+        let res = await fetch(`${baseUrl}/api/get-scb-summary-tc/${user_id}/${startDate}/${endDate}`);
+        res = await res.json();
+        setData(res)
+        if(res.length >0){
+            setKeys(Object.keys(res[0]))
+            setFlag(1)
+        }        
+    }
+    async function showSummaryTl(){
+        let user_id = user.user_id;
+        let res = await fetch(`${baseUrl}/api/get-scb-summary-tl/${user_id}/${startDate}/${endDate}`);
+        res = await res.json();
+        setData(res)
+        if(res.length >0){
+            setKeys(Object.keys(res[0]))
+            setFlag(1)
+        }        
+    }
+    async function showSummaryBm(){
+        let user_id = user.user_id;
+        let res = await fetch(`${baseUrl}/api/get-scb-summary-bm/${user_id}/${startDate}/${endDate}`);
         res = await res.json();
         setData(res)
         if(res.length >0){
@@ -47,7 +75,7 @@ function ContactUs() {
     }
     async function showData(){
         let user_id = user.user_id;
-        let res = await fetch(`${baseUrl}/api/get-scb-data/${user_id}`);
+        let res = await fetch(`${baseUrl}/api/get-scb-data/${user_id}/${startDate}/${endDate}`);
         res = await res.json();
         console.log(res)
         setData(res)
@@ -63,56 +91,44 @@ function ContactUs() {
             {/* <h1 style={{ marginTop: "200px", justifyContent: "center", display: "flex" }}>Contact us comming soon</h1> */}
 
             <div className="row col-md-12">
-                <div className="row col-md-6">
-                    <div className="col-md-3">
-                        <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
+                    <div className="row col-md-8">
+                        <div className="col-md-4">
+                            {/* <DatePicker selected={startDate} dateFormat="yyyy-mm-dd 00:00" maxDate={endDate} onChange={(date) => setStartDate(date)} onKeyDown={(e) => e.preventDefault()} />  */}
+                            <input type="date" className="form-control" onKeyDown={(e) => e.preventDefault()} value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+
+                        </div>
+                        <div className="col-md-4">
+                            {/* <DatePicker selected={endDate} dateFormat="yyyy-mm-dd 00:00" maxDate={endDate} onChange={(date) => setEndDate(date)} onKeyDown={(e) => e.preventDefault()} /> */}
+                            <input type="date" className="form-control" onKeyDown={(e) => e.preventDefault()} value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+
+                        </div>
                     </div>
-                    <div className="col-md-3">
-                        <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
-                    </div>
-                </div>
-                {/* <div className="row col-md-10">
-                <div className="col-md-2">
-                    <MSelect data={colourOptions} />
-                </div>
-                <div className="col-md-2">
-                    <MSelect data={colourOptions} />
-                </div>
-                <div className="col-md-2">
-                    <MSelect data={colourOptions} />
-                </div>
-                <div className="col-md-2">
-                    <MSelect data={colourOptions} />
-                </div>
-                <div className="col-md-2">
-                    <MSelect data={colourOptions} />
-                </div>
-                </div> */}
-            </div><br />
+
+                </div><br />
             <div className="row col-md-12">
                 {/* <div className="col-md-9 row"> */}
                 <div className="col-md-2">
-                    <Button style={{ width: "100%" }} onClick={showSummary} type="button" className="btn btn-dark" >Summary</Button>
+                    <Button style={{ width: "100%" }} onClick={showButton} type="button" className="btn btn-dark" >Summary</Button>
                 </div>
                 <div className="col-md-2">
                     <Button style={{ width: "100%" }} onClick={showData} type="button" className="btn btn-warning" >Data</Button>
                 </div>
-                {/* <div className="col-md-2">
-                        <Button style={{width: "100%"}} type="button" className="btn btn-primary" >Time Trend</Button>
-                    </div>
-                    <div className="col-md-2">
-                        <Button style={{width: "100%"}} type="button" className="btn btn-success" >Day Trend</Button>
-                    </div>
-                    <div className="col-md-2">
-                        <Button style={{width: "100%"}} type="button" className="btn btn-danger" >MTD Trend</Button>
-                    </div>
-                    <div className="col-md-2">
-                        <Button style={{width: "100%"}} type="button" className="btn btn-primary" >Month Trend</Button>
-                    </div> */}
-                {/* </div> */}
+                
 
-            </div><br />
-            <SummaryTable data={data} keys={keys} type={flag} bank="SCB"/>
+            </div><hr />
+            <div style={{ visibility: `${visible}` }}>
+                    <div className="row col-md-12">
+                        <div className="col-md-2">
+                            <Button style={{ width: "100%", height: "100%" }} onClick={showSummaryTc} type="button" className="btn btn-success" >Tele Caller</Button>
+                        </div>
+                        <div className="col-md-2">
+                            <Button style={{ width: "100%", height: "100%" }} onClick={showSummaryTl} type="button" className="btn btn-info" >Team Leader</Button>
+                        </div>
+                        <div className="col-md-2">
+                            <Button style={{ width: "100%", height: "100%" }} onClick={showSummaryBm} type="button" className="btn btn-danger" >Branch Manager</Button>
+                        </div>
+                    </div><hr /></div>
+            <SummaryTable data={data} keys={keys} type={flag} bank="SCB" getData={showData}/>
         </div>
     );
 
