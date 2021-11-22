@@ -91,7 +91,7 @@ function Home() {
                 </Modal.Header>
                 <Modal.Body>
 
-                    <input type="file" name="image" onChange={(e) => setImage(e) } />
+                    <input type="file"  name="image" onChange={(e) => setImage(e) } />
 
                 </Modal.Body>
                 <Modal.Footer>

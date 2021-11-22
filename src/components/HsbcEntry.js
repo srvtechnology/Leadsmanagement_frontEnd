@@ -1,69 +1,66 @@
 import React, { useState, useEffect } from "react";
 import { FaTimes, FaArrowRight,FaEye,FaKey } from "react-icons/fa";
-import { useLocation, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Modal, Button } from "react-bootstrap";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import Compressor from 'compressorjs';
 
 import baseUrl from './baseurl';
 
-function SbiEntryForm(props) {
-    let user = JSON.parse(localStorage.getItem('user-info'))
-    const [flag, setFlag] = useState(0);
+function HsbcEntry(props) {
     const [msg, setMsg] = useState('');
-    const [show, setShow] = useState(false);
+    const [file, setSelectedfile] = useState(null);
+    const [application_no, setapplication_no] = useState('');
     const [bank_doc, setbank_doc] = useState(null); const [bank_doc_pass, setbank_doc_pass] = useState('');
     const [salary_slip, setsalary_slip] = useState([]); const [salary_slip_pass, setsalary_slip_pass] = useState('');
     const [pan_card, setpan_card] = useState(null); const [pan_card_pass, setpan_card_pass] = useState('');
     const [aadhar_card, setaadhar_card] = useState(null); const [aadhar_card_pass, setaadhar_card_pass] = useState('');
     const [other_doc, setother_doc] = useState([]); const [other_doc_pass, setother_doc_pass] = useState('');
-    const [id, setId] = useState(user.id)
-    const [application_no, setapplication_no] = useState('')
-    const [image, setSelectedImage] = useState(null);
+    const [salutation, setsalutation] = useState(''); const [fname, setfname] = useState(''); const [lname, setlname] = useState('');
+    const [status, setstatus] = useState(0); const [comment, setcomment] = useState('');
+    const [card_type, setcard_type] = useState(''); const [mobile, setmobile] = useState(''); const [pan, setpan] = useState('');
+    const [dob, setdob] = useState(''); const [birth_place, setbirth_place] = useState('');
+    const [aadhaar, setaadhaar] = useState(''); const [aadhaar_linked_mobile, setaadhaar_linked_mobile] = useState('');
+    const [mother_name, setmother_name] = useState(''); const [father_name, setfather_name] = useState(''); const [dependent, setdependent] = useState('');
+    const [resi_address, setresi_address] = useState(''); const [resi_city, setresi_city] = useState(''); const [resi_pin, setresi_pin] = useState('');
+    const [resi_status, setresi_status] = useState(''); const [current_rest_time, setcurrent_rest_time] = useState(''); const [email, setemail] = useState('');
+    const [marital_status, setmarital_status] = useState(''); const [spouse_name, setspouse_name] = useState(''); const [company, setcompany] = useState('');
+    const [designation, setdesignation] = useState(''); const [current_company_experience, setcurrent_company_experience] = useState('');
+    const [total_experience, settotal_experience] = useState(''); const [office_email, setoffice_email] = useState(''); const [pf, setpf] = useState('');
+    const [office_address, setoffice_address] = useState(''); const [office_city, setoffice_city] = useState(''); const [office_pin, setoffice_pin] = useState('');
+    const [office_landline, setoffice_landline] = useState(''); const [comm_address, setcomm_address] = useState('');
+    const [nature_of_bussiness, setnature_of_bussiness] = useState(''); const [industry, setindustry] = useState('');
+    const [tlstatus, settlstatus] = useState('');
+    const [bank_document, setbank_document] = useState(''); const [pancard, setpancard] = useState(''); const [aadharcard, setaadharcard] = useState(''); 
+    const [sal_slip, setsal_slip]= useState([]);
+    const [otherDoc, setotherDoc]= useState([]);    const [lead_ref, setlead_ref] = useState(''); const [bank_remark, setbank_remark] = useState(''); const [card_limit, setcard_limit] = useState('');
+    let user = JSON.parse(localStorage.getItem('user-info'))
+    const lead_id = props.match.params.id
     const [showm, setShowm] = useState(false);
     const handleClose = () => setShowm(false);
     const handleShow = () => setShowm(true);
-    const [lead_ref, setlead_ref] = useState('');
-    const [bank_remark, setbank_remark] = useState('')
-    const [salutation, setsalutation] = useState(''); const [fname, setfname] = useState(''); const [lname, setlname] = useState('');
-    const [sarrogate, setsarrogate] = useState(''); const [mobile, setmobile] = useState(''); const [pan, setpan] = useState(''); const [dob, setdob] = useState(''); const [education, seteducation] = useState(''); const [father_name, setfather_name] = useState('');
-    const [mother_name, setmother_name] = useState(''); const [marital_status, setmarital_status] = useState(''); const [resi_address, setresi_address] = useState(''); const [resi_city, setresi_city] = useState(''); const [resi_pin, setresi_pin] = useState(''); const [curr_adrs_proof, setcurr_adrs_proof] = useState('');
-    const [resi_phone, setresi_phone] = useState(''); const [sbi_ac, setsbi_ac] = useState(''); const [email, setemail] = useState(''); const [occupation, setoccupation] = useState(''); const [designation, setdesignation] = useState(''); const [company, setcompany] = useState('');
-    const [office_address, setoffice_address] = useState(''); const [office_city, setoffice_city] = useState(''); const [office_pin, setoffice_pin] = useState(''); const [office_phone, setoffice_phone] = useState(''); const [aadhaar_linked_mobile, setaadhaar_linked_mobile] = useState(''); const [appointment_date, setappointment_date] = useState(''); const [appointment_time, setappointment_time] = useState('');
-    const [card_applied, setcard_applied] = useState(''); const [appointment_adrs, setappointment_adrs] = useState(''); const [status, setstatus] = useState(0); const [comment, setcomment] = useState(''); const [tlstatus, settlstatus] = useState('');
-    const [bank_document, setbank_document] = useState(''); const [pancard, setpancard] = useState(''); const [aadharcard, setaadharcard] = useState(''); 
-    const [sal_slip, setsal_slip]= useState([]);
-    const [otherDoc, setotherDoc]= useState([]);
-    const [card_limit, setcard_limit] = useState('');
-    // console.log(props.match.params.id)
-
-    const lead_id = props.match.params.id
-    const history = useHistory()
     useEffect(async () => {
+        if (lead_id > 0) {
 
-        let res = await fetch(`${baseUrl}/api/get-lead-sbi/${lead_id}`);
-        res = await res.json();
-        setsarrogate(res.lead.sarrogate); setmobile(res.lead.mobile); setpan(res.lead.pan); setsalutation(res.lead.salutation); setfname(res.lead.fname); setlname(res.lead.lname); setdob(res.lead.dob); seteducation(res.lead.education); setfather_name(res.lead.father_name); setmother_name(res.lead.mother_name); setmarital_status(res.lead.marital_status); setresi_address(res.lead.resi_address); setresi_city(res.lead.resi_city); setresi_pin(res.lead.resi_pin); setcurr_adrs_proof(res.lead.curr_adrs_proof); setresi_phone(res.lead.resi_phone); setsbi_ac(res.lead.sbi_ac); setemail(res.lead.email); setoccupation(res.lead.occupation); setdesignation(res.lead.designation); setcompany(res.lead.company); setoffice_address(res.lead.office_address); setoffice_city(res.lead.office_city); setoffice_pin(res.lead.office_pin); setoffice_phone(res.lead.office_phone); setaadhaar_linked_mobile(res.lead.aadhaar_linked_mobile); setappointment_date(res.lead.appointment_date); setappointment_time(res.lead.appointment_time); setcard_applied(res.lead.card_applied); setappointment_adrs(res.lead.appointment_adrs);
-        setstatus(res.lead.status); settlstatus(res.lead.tl_status); setbank_document(res.lead.bank_document); setapplication_no(res.lead.application_no); setcomment(res.lead.comment)
-        setotherDoc(JSON.parse(res.lead.other_doc));setsal_slip(JSON.parse(res.lead.salary_slip)); setpancard(res.lead.pan_card); setaadharcard(res.lead.aadhar_card)
-        setlead_ref(res.lead.lead_ref); setbank_remark(res.lead.bank_remark); setcard_limit(res.lead.card_limit)
-        setbank_doc_pass(res.lead.bank_pass);setsalary_slip_pass(res.lead.salary_pass);setpan_card_pass(res.lead.pan_pass);setaadhar_card_pass(res.lead.aadhar_pass);
+            let res = await fetch(`${baseUrl}/api/get-lead-hsbc/${lead_id}`);
+            res = await res.json();
+            console.log(res)
+            setcard_type(res.lead.card_type); setmobile(res.lead.mobile); setpan(res.lead.pan); setsalutation(res.lead.salutation); setfname(res.lead.fname); setlname(res.lead.lname); setdob(res.lead.dob); setbirth_place(res.lead.birth_place); setaadhaar(res.lead.aadhaar); setaadhaar_linked_mobile(res.lead.aadhaar_linked_mobile); setmother_name(res.lead.mother_name); setfather_name(res.lead.father_name); setdependent(res.lead.dependent); setresi_address(res.lead.resi_address); setresi_city(res.lead.resi_city); setresi_pin(res.lead.resi_pin); setresi_status(res.lead.resi_status); setcurrent_rest_time(res.lead.current_rest_time); setemail(res.lead.email); setmarital_status(res.lead.marital_status); setspouse_name(res.lead.spouse_name); setcompany(res.lead.company); setdesignation(res.lead.designation); setcurrent_company_experience(res.lead.current_company_experience); settotal_experience(res.lead.total_experience); setoffice_email(res.lead.office_email); setpf(res.lead.pf); setoffice_address(res.lead.office_address); setoffice_city(res.lead.office_city); setoffice_pin(res.lead.office_pin); setoffice_landline(res.lead.office_landline);
+            setcomm_address(res.lead.comm_address); setnature_of_bussiness(res.lead.nature_of_bussiness); setindustry(res.lead.industry);
+            setbank_document(res.lead.bank_document); settlstatus(res.lead.tl_status); setstatus(res.lead.status); setcomment(res.lead.comment)
+            setapplication_no(res.lead.application_no); setcomment(res.lead.comment); setotherDoc(JSON.parse(res.lead.other_doc));setsal_slip(JSON.parse(res.lead.salary_slip)); setpancard(res.lead.pan_card); setaadharcard(res.lead.aadhar_card);
+            setbank_doc_pass(res.lead.bank_pass);setsalary_slip_pass(res.lead.salary_pass);setpan_card_pass(res.lead.pan_pass);setaadhar_card_pass(res.lead.aadhar_pass);
+            
+        }
+
     }, [])
-    function handleBack(e) {
-        history.push("/sbi-summary")
-    }
-
     
-
     function handleSubmit() {
         const formData = new FormData()
         let data = {
-            id,
-            lead_id, salutation, fname, lname, status, comment, tlstatus, application_no, lead_ref, bank_remark,
-            sarrogate, mobile, pan, dob, education, father_name, mother_name, marital_status, resi_address, resi_city,
-            resi_pin, curr_adrs_proof, resi_phone, sbi_ac, email, occupation, designation, company, office_address, office_city,
-            office_pin, office_phone, aadhaar_linked_mobile, appointment_date, appointment_time, card_applied, appointment_adrs, card_limit
+            id: user.user_id, role: user.role, lead_id, status, comment, tlstatus, application_no, lead_ref, bank_remark,
+            salutation, fname, lname, office_city, card_type, mobile, pan, dob, birth_place, aadhaar, aadhaar_linked_mobile,
+            mother_name, father_name, dependent, resi_address, resi_city, resi_pin, resi_status, current_rest_time,
+            email, marital_status, spouse_name, company, designation, current_company_experience, total_experience,
+            office_email, pf, office_address, office_pin, office_landline, comm_address, nature_of_bussiness, industry
         }
         formData.append("data",JSON.stringify(data))
         formData.append("bank_doc", bank_doc);
@@ -78,7 +75,7 @@ function SbiEntryForm(props) {
             formData.append(`other_doc[${i}]`, other_doc[i])
         }
 
-        fetch(`${baseUrl}/api/lead-entry-sbi`,
+        fetch(`${baseUrl}/api/lead-entry-hsbc`,
             {
                 method: 'POST',
                 body: formData,
@@ -87,46 +84,45 @@ function SbiEntryForm(props) {
             .then(res => {
                 console.log(res)
                 if (res.flag === 0) {
-                    setMsg(res.msg);
-                } else if (res.flag === 1) {
                     setMsg(res.msg)
-                    setsarrogate(''); setmobile(''); setpan(''); setfname(''); setlname(''); setdob(''); seteducation(''); setfather_name(''); setmother_name('');
-                    setmarital_status(''); setresi_address(''); setresi_city(''); setresi_pin(''); setcurr_adrs_proof(''); setresi_phone('');
-                    setsbi_ac(''); setemail(''); setoccupation(''); setdesignation(''); setcompany(''); setoffice_address(''); setoffice_city('');
-                    setoffice_pin(''); setoffice_phone(''); setaadhaar_linked_mobile(''); setappointment_date(''); setappointment_time('');
-                    setcard_applied(''); setappointment_adrs(''); setcard_limit('')
-
+                } else if (res.flag === 1) {
+                    setMsg(res.msg);
+                    setcard_type(''); setmobile(''); setpan(''); setfname('');setlname(''); setdob(''); setbirth_place(''); setaadhaar('');
+                    setaadhaar_linked_mobile(''); setmother_name(''); setfather_name(''); setdependent(''); setresi_address('');
+                    setresi_city(''); setresi_pin(''); setresi_status(''); setcurrent_rest_time(''); setemail('');
+                    setmarital_status(''); setspouse_name(''); setcompany(''); setdesignation(''); setcurrent_company_experience('');
+                    settotal_experience(''); setoffice_email(''); setpf(''); setoffice_address(''); setoffice_city(''); setoffice_pin('');
+                    setoffice_landline(''); setcomm_address(''); setnature_of_bussiness(''); setindustry('')
                 }
+
 
             })
             .catch(err => {
                 console.warn(err.msg)
             });
     }
-    function renderComponent() {
-  const products = ['orange', 'apple', 'watermelon'];
-
-  const list = []
-
-  for (const [i, product] of products.entries()) {
-    list.push(<li>{product}</li>)
-  }
-
-  return (
-    <div>
-      {list}
-    </div>
-  )
-}
+    const history = useHistory();
+    function handleBack(e) {
+        history.push("/hsbc-summary")
+    }
     return (
         <>
-            <section style={{ marginTop: "80px" }}>
+            <section style={{ marginTop: "100px" }}>
                 <div className="container p-3">
-
-                    <h1>SBI Lead Entry</h1>
-                    
+                    <h1>HSBC Lead Entry</h1>
                     <hr />
                     <div className="main-form row">
+                        <div className="mb-3 col-md-6 col-12">
+                            <label className="form-label">Card Type</label>
+                            <select className="form-select" value={card_type} onChange={(e) => setcard_type(e.target.value)}>
+                                <option value="">Card Type</option>
+                                <option value="VISA_PLATINUM_CREDIT_CARD">HSBC Visa Platinum Credit Card</option>
+                                <option value="SMART_VALUE_CREDIT_CARD">HSBC Smart Value Credit Card</option>
+                                <option value="CASHBACK_CREDIT_CARD">HSBC Cashback Credit Card</option>
+                                <option value="MASTERCARD_PREMIER_CREDIT_CARD">HSBC MasterCard Premier Credit Card</option>
+
+                            </select>
+                        </div>
                         <div className="mb-3 col-md-6 col-12">
                             <label className="form-label">Salutation</label>
                             <select className="form-select" value={salutation} onChange={(e) => setsalutation(e.target.value)}>
@@ -144,28 +140,57 @@ function SbiEntryForm(props) {
                             <input type="text" className="form-control" value={lname} onChange={(e) => setlname(e.target.value)} />
                         </div>
                         <div className="mb-3 col-md-6 col-12">
-                            <label className="form-label">DOB</label>
-
-                            <input type="date" className="form-control" onKeyDown={(e) => e.preventDefault()} value={dob} onChange={(e) => setdob(e.target.value)} />
+                            <label className="form-label">Mobile</label>
+                            <input type="text" className="form-control" maxLength="10" value={mobile} onChange={(e) => setmobile(e.target.value)} />
                         </div>
                         <div className="mb-3 col-md-6 col-12">
                             <label className="form-label">PAN</label>
                             <input type="text" className="form-control" value={pan} onChange={(e) => setpan(e.target.value)} />
                         </div>
+
                         <div className="mb-3 col-md-6 col-12">
-                            <label className="form-label">Father Name</label>
-                            <input type="text" className="form-control" value={father_name} onChange={(e) => setfather_name(e.target.value)} />
+                            <label className="form-label">DOB</label>
+                            <input type="date" className="form-control" value={dob} onChange={(e) => setdob(e.target.value)} />
+                        </div>
+                        <div className="mb-3 col-md-6 col-12">
+                            <label className="form-label">Birth Place</label>
+                            <input type="text" className="form-control" value={birth_place} onChange={(e) => setbirth_place(e.target.value)} />
+                        </div>
+                        <div className="mb-3 col-md-6 col-12">
+                            <label className="form-label">AADHAAR</label>
+                            <input type="text" className="form-control" maxLength="12" value={aadhaar} onChange={(e) => setaadhaar(e.target.value)} />
+                        </div>
+                        <div className="mb-3 col-md-6 col-12">
+                            <label className="form-label">Is your aadhar linked with mobile?</label>
+                            <select className="form-select" value={aadhaar_linked_mobile} onChange={(e) => setaadhaar_linked_mobile(e.target.value)}>
+                                <option value="">Is your aadhar linked with mobile?</option>
+                                <option value="NO">No</option>
+                                <option value="YES">Yes</option>
+                            </select>
                         </div>
                         <div className="mb-3 col-md-6 col-12">
                             <label className="form-label">Mother Name</label>
                             <input type="text" className="form-control" value={mother_name} onChange={(e) => setmother_name(e.target.value)} />
                         </div>
                         <div className="mb-3 col-md-6 col-12">
+                            <label className="form-label">Father Name</label>
+                            <input type="text" className="form-control" value={father_name} onChange={(e) => setfather_name(e.target.value)} />
+                        </div>
+                        <div className="mb-3 col-md-6 col-12">
+                            <label className="form-label">Dependent</label>
+                            <select className="form-select" value={dependent} onChange={(e) => setdependent(e.target.value)}>
+                                <option value="">Dependent</option>
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                        <div className="mb-3 col-md-6 col-12">
                             <label className="form-label">Resi Address</label>
                             <textarea className="form-control" value={resi_address} onChange={(e) => setresi_address(e.target.value)}></textarea>
                         </div>
                         <div className="mb-3 col-md-6 col-12">
-                            <label className="form-label">Resi City</label>
+                            <label className="form-label">Resi Citi</label>
                             <input type="text" className="form-control" value={resi_city} onChange={(e) => setresi_city(e.target.value)} />
                         </div>
                         <div className="mb-3 col-md-6 col-12">
@@ -173,56 +198,20 @@ function SbiEntryForm(props) {
                             <input type="text" maxLength="6" className="form-control" value={resi_pin} onChange={(e) => setresi_pin(e.target.value)} />
                         </div>
                         <div className="mb-3 col-md-6 col-12">
-                            <label className="form-label">Current Resi proof</label>
-                            <select className="form-select" value={curr_adrs_proof} onChange={(e) => setcurr_adrs_proof(e.target.value)}>
-                                <option value="">Current Resi proof</option>
-                                <option value="yes">Yes</option>
-                                <option value="no">No</option>
+                            <label className="form-label">Resi Status</label>
+                            <select className="form-select" value={resi_status} onChange={(e) => setresi_status(e.target.value)}>
+                                <option value="">Resi Status</option>
+                                <option value="OWNED">Owned</option>
+                                <option value="RENTED">Rented</option>
                             </select>
                         </div>
                         <div className="mb-3 col-md-6 col-12">
-                            <label className="form-label">Resi phone</label>
-                            <input type="text" className="form-control" maxLength="10" value={resi_phone} onChange={(e) => setresi_phone(e.target.value)} />
-                        </div>
-                        <div className="mb-3 col-md-6 col-12">
-                            <label className="form-label">Mobile</label>
-                            <input type="text" maxLength="10" className="form-control" value={mobile} onChange={(e) => setmobile(e.target.value)} />
+                            <label className="form-label">Current Resi Time</label>
+                            <input type="text" className="form-control" value={current_rest_time} onChange={(e) => setcurrent_rest_time(e.target.value)} />
                         </div>
                         <div className="mb-3 col-md-6 col-12">
                             <label className="form-label">Email</label>
                             <input type="email" className="form-control" value={email} onChange={(e) => setemail(e.target.value)} />
-                        </div>
-                        <div className="mb-3 col-md-6 col-12">
-                            <label className="form-label">Occupation</label>
-                            <select className="form-select" value={occupation} onChange={(e) => setoccupation(e.target.value)}>
-                                <option value="">Occupation</option>
-                                <option value="SL">Salaried</option>
-                                <option value="SE">Self Employed</option>
-                            </select>
-                        </div>
-                        <div className="mb-3 col-md-6 col-12">
-                            <label className="form-label">Company</label>
-                            <input type="text" className="form-control" value={company} onChange={(e) => setcompany(e.target.value)} />
-                        </div>
-                        <div className="mb-3 col-md-6 col-12">
-                            <label className="form-label">Designation</label>
-                            <input type="text" className="form-control" value={designation} onChange={(e) => setdesignation(e.target.value)} />
-                        </div>
-                        <div className="mb-3 col-md-6 col-12">
-                            <label className="form-label">Surrogate</label>
-                            <select className="form-select" value={sarrogate} onChange={(e) => setsarrogate(e.target.value)}>
-                                <option value="">Select</option>
-                                <option value="Salary Slip">Salary Slip</option>
-                                <option value="Other bank Card">Other bank Card</option>
-                            </select>
-                        </div>
-                        <div className="mb-3 col-md-6 col-12">
-                            <label className="form-label">Education</label>
-                            <select className="form-select" value={education} onChange={(e) => seteducation(e.target.value)}>
-                                <option value="">Select</option>
-                                <option value="Graduate">Graduate</option>
-                                <option value="Post Graduate">Post Graduate</option>
-                            </select>
                         </div>
                         <div className="mb-3 col-md-6 col-12">
                             <label className="form-label">Marital Status</label>
@@ -233,8 +222,32 @@ function SbiEntryForm(props) {
                             </select>
                         </div>
                         <div className="mb-3 col-md-6 col-12">
-                            <label className="form-label">SBI AC</label>
-                            <input type="text" className="form-control" value={sbi_ac} onChange={(e) => setsbi_ac(e.target.value)} />
+                            <label className="form-label">Spouse Name</label>
+                            <input type="text" className="form-control" value={spouse_name} onChange={(e) => setspouse_name(e.target.value)} />
+                        </div>
+                        <div className="mb-3 col-md-6 col-12">
+                            <label className="form-label">Company</label>
+                            <input type="text" className="form-control" value={company} onChange={(e) => setcompany(e.target.value)} />
+                        </div>
+                        <div className="mb-3 col-md-6 col-12">
+                            <label className="form-label">Designation</label>
+                            <input type="text" className="form-control" value={designation} onChange={(e) => setdesignation(e.target.value)} />
+                        </div>
+                        <div className="mb-3 col-md-6 col-12">
+                            <label className="form-label">Current Company Experience</label>
+                            <input type="text" className="form-control" value={current_company_experience} onChange={(e) => setcurrent_company_experience(e.target.value)} />
+                        </div>
+                        <div className="mb-3 col-md-6 col-12">
+                            <label className="form-label">Total Experience</label>
+                            <input type="text" className="form-control" value={total_experience} onChange={(e) => settotal_experience(e.target.value)} />
+                        </div>
+                        <div className="mb-3 col-md-6 col-12">
+                            <label className="form-label">Office Email</label>
+                            <input type="email" className="form-control" value={office_email} onChange={(e) => setoffice_email(e.target.value)} />
+                        </div>
+                        <div className="mb-3 col-md-6 col-12">
+                            <label className="form-label">PF</label>
+                            <input type="text" className="form-control" value={pf} onChange={(e) => setpf(e.target.value)} />
                         </div>
                         <div className="mb-3 col-md-6 col-12">
                             <label className="form-label">Office Address</label>
@@ -249,47 +262,24 @@ function SbiEntryForm(props) {
                             <input type="text" maxLength="6" className="form-control" value={office_pin} onChange={(e) => setoffice_pin(e.target.value)} />
                         </div>
                         <div className="mb-3 col-md-6 col-12">
-                            <label className="form-label">Office Phone</label>
-                            <input type="text" className="form-control" value={office_phone} onChange={(e) => setoffice_phone(e.target.value)} />
+                            <label className="form-label">Office Landline</label>
+                            <input type="text" className="form-control" value={office_landline} onChange={(e) => setoffice_landline(e.target.value)} />
                         </div>
                         <div className="mb-3 col-md-6 col-12">
-                            <label className="form-label">Is your aadhar linked with mobile?</label>
-                            <select className="form-select" value={aadhaar_linked_mobile} onChange={(e) => setaadhaar_linked_mobile(e.target.value)}>
-                                <option value="">Is your aadhar linked with mobile?</option>
-                                <option value="NO">No</option>
-                                <option value="YES">Yes</option>
-                            </select>
-                        </div>
-
-                        <div className="mb-3 col-md-6 col-12">
-                            <label className="form-label">Appointment Date</label>
-                            <input type="date" className="form-control" onKeyDown={(e) => e.preventDefault()} value={appointment_date} onChange={(e) => setappointment_date(e.target.value)} />
-                        </div>
-                        <div className="mb-3 col-md-6 col-12">
-                            <label className="form-label">Appointment Time</label>
-                            <input type="time" className="form-control" value={appointment_time} onChange={(e) => setappointment_time(e.target.value)} />
-                        </div>
-
-                        <div className="mb-3 col-md-6 col-12">
-                            <label className="form-label">Card Applied For</label>
-                            <select className="form-select" value={card_applied} onChange={(e) => setcard_applied(e.target.value)}>
-                                <option value="">Card Applied For</option>
-                                <option value="FBB">FBB</option>
-                                <option value="IRCTC">IRCTC</option>
-                                <option value="BPCL">SBI BPCL</option>
-                                <option value="ELITE">SBI Elite</option>
-                                <option value="PRIME">SBI Prime</option>
-                                <option value="CLICK">SBI Simply Click</option>
-                                <option value="SAVE">SBI Simply Save</option>
+                            <label className="form-label">Comm. Address</label>
+                            <select className="form-select" value={comm_address} onChange={(e) => setcomm_address(e.target.value)}>
+                                <option value="">Comm. Address</option>
+                                <option value="OFFICE">Office</option>
+                                <option value="RESI">Resi</option>
                             </select>
                         </div>
                         <div className="mb-3 col-md-6 col-12">
-                            <label className="form-label">Appointment Address</label>
-                            <select className="form-select" value={appointment_adrs} onChange={(e) => setappointment_adrs(e.target.value)}>
-                                <option value="">Appointment Address</option>
-                                <option value="OFFICE">OFFICE</option>
-                                <option value="RESI">RESI</option>
-                            </select>
+                            <label className="form-label">Nature of Business</label>
+                            <input type="text" className="form-control" value={nature_of_bussiness} onChange={(e) => setnature_of_bussiness(e.target.value)} />
+                        </div>
+                        <div className="mb-3 col-md-6 col-12">
+                            <label className="form-label">Industry</label>
+                            <input type="text" className="form-control" value={industry} onChange={(e) => setindustry(e.target.value)} />
                         </div>
                         {
                             user.role === 1 || user.role === 6 && lead_id?
@@ -298,12 +288,12 @@ function SbiEntryForm(props) {
                                         <label className="form-label">Application Status</label>
                                         <select className="form-select" value={status} onChange={(e) => setstatus(e.target.value)}>
                                             <option value="0">Select</option>
-                                            <option value="2">App Code Pending</option>
-                                            <option value="3">App Code Received</option>
                                             <option value="4">Need Correction</option>
-                                            <option value="10">e-KYC Done</option>
                                             <option value="5">Decline</option>
                                             <option value="6">Approve</option>
+                                            <option value="15">v-KYC Done</option>
+                                            <option value="35">e-Sign Mail Done</option>
+                                            <option value="37">Call Done</option>
                                         </select>
                                     </div>
 
@@ -314,6 +304,7 @@ function SbiEntryForm(props) {
                                         </div>
                                     </> : null}
                                     
+                                       
                                 </> : user.role === 2 && lead_id?
                                     <>
 
@@ -321,81 +312,71 @@ function SbiEntryForm(props) {
                                             <label className="form-label">Application Status</label>
                                             <select className="form-select" value={tlstatus} onChange={(e) => settlstatus(e.target.value)}>
                                                 <option value="">Select</option>
-                                                <option value="Approve">QD</option>
-                                                <option value="Reject">Reject</option>
+                                                <option value="Approve">Approve</option>
+                                                <option value="Reject">Lead Reject</option>
                                                 {
-                                                    status === 2?<>
-                                                        <option value="App Code Sent">App Code Sent</option>
-                                                    </>:null
+                                                    status === 14 ? <>
+                                                        <option value="v-KYC Done">v-KYC Done</option>
+                                                    </> : null
                                                 }
                                                 {
-                                                    bank_remark === 'e-KYC Pending'?<>
-                                                        <option value="e-KYC Done">e-KYC Done</option>
-                                                    </>:null
+                                                    status === 34 ? <>
+                                                        <option value="e-Sign Mail Done">e-Sign Mail Done</option>
+                                                    </> : null
                                                 }
                                                 {
-                                                    bank_remark === 'Doc. Pending'?<>
-                                                        <option value="Doc. Sent">Doc. Sent</option>
-                                                    </>:null
+                                                    status === 36 ? <>
+                                                        <option value="Call Done">Call Done</option>
+                                                    </> : null
+                                                }
+                                                {
+                                                    status === 16 ? <>
+                                                        <option value="Doc. Uploaded">Doc. Uploaded</option>
+                                                    </> : null
                                                 }
                                             </select>
                                         </div>
+                                       
                                         
+
 
                                     </> : user.role === 4 ?
                                         <>
-                                            <div className="mb-3 col-md-6 col-12">
-                                                <label className="form-label">Application Number</label>
-                                                <input type="text" className="form-control" value={application_no} onChange={(e) => setapplication_no(e.target.value)} />
-                                            </div>
-                                            <div className="mb-3 col-md-6 col-12">
-                                                <label className="form-label">Lead Reference</label>
-                                                <input type="text" className="form-control" value={lead_ref} onChange={(e) => setlead_ref(e.target.value)} />
-                                            </div>
+
 
                                             <div className="mb-3 col-md-6 col-12">
                                                 <label className="form-label">Application Status</label>
                                                 <select className="form-select" value={status} onChange={(e) => setstatus(e.target.value)}>
                                                     <option value="0">Select</option>
-                                                    <option value="2">App Code Pending</option>
-                                                    <option value="3">App Code Received</option>
-                                                    <option value="9">App Code Not Received</option>
                                                     <option value="4">Need Correction</option>
                                                     <option value="5">Decline</option>
                                                     <option value="6">Approve</option>
-                                                    <option value="8">Card booked</option>
+                                                    <option value="16">Doc. Pending</option>
+                                                    <option value="34">e-Sign Mail Sent</option>
+                                                    <option value="36">Call Pending</option>
+                                                    <option value="14">v-KYC Pending</option>
+                                                   
                                                 </select>
                                             </div>
-                                            {status == 6 ? <>
+
+                                            {status > 5 ? <>
                                                 <div className="mb-3 col-md-6 col-12">
-                                                    <label className="form-label">Bank Remark</label>
-                                                    <select className="form-select" value={bank_remark} onChange={(e) => setbank_remark(e.target.value)}>
-                                                        <option value="0">Select</option>
-                                                        <option value="e-KYC Pending">e-KYC Pending</option>
-                                                        <option value="v-KYC Pending">v-KYC Pending</option>
-                                                        <option value="Doc. Pending">Doc. Pending</option>
-                                                        <option value="Doc. Verified">Doc. Verified</option>
-                                                    </select>
+                                                    <label className="form-label">Application Number</label>
+                                                    <input type="text" className="form-control" value={application_no} onChange={(e) => setapplication_no(e.target.value)} />
                                                 </div>
                                             </> : null}
-                                            {status == 4 || status == 6 || tlstatus == 'App Code Send' ? <>
+                                            {status == 4  || status == 12 || status == 21 || tlstatus == 'App Code Send' ? <>
                                                 <div className="mb-3 col-md-6 col-12">
                                                     <label className="form-label">Remark</label>
                                                     <textarea className="form-control" value={comment} onChange={(e) => setcomment(e.target.value)} />
                                                 </div>
                                             </> : null}
-                                            {status == 8 ? <>
-                                                <div className="mb-3 col-md-6 col-12">
-                                                    <label className="form-label">Card Limit</label>
-                                                    <input type="text" className="form-control" value={card_limit} onChange={(e) => setcard_limit(e.target.value)} />
-
-                                                </div>
-                                            </> : null}
+                                            
 
                                         </> : <></>
-                        }
-                        
+                        }<hr />
                         {/* <div className="row mb-3 col-md-6 col-12" style={{marginLeft: "auto"}}> */}
+
 
                         {
                             user.role === 1 || user.role === 6 || user.role === 2 ? <>
@@ -542,16 +523,11 @@ function SbiEntryForm(props) {
                                 <h3 style={{ color: "blue" }}>{msg}</h3>
                             </div>
                         </div>
-
-
                     </div>
-
-
                 </div>
             </section>
             
         </>
     )
-
 }
-export default SbiEntryForm;
+export default HsbcEntry;

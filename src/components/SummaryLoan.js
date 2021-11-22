@@ -10,7 +10,7 @@ import "jspdf-autotable";
 import jsPDF from "jspdf";
 import {FaFileDownload} from "react-icons/fa";
 
-function SummaryScb() {
+function SummaryLoan(props) {
     let user = JSON.parse(localStorage.getItem('user-info'))
 
     const colourOptions = [
@@ -42,12 +42,13 @@ function SummaryScb() {
     const [startDate, setStartDate] = useState(yesterday);
     const [endDate, setEndDate] = useState(today);    const [flag, setFlag] = useState(0)
     const [visible, setvisible] = useState('hidden');
+    const bank = props.match.params.bank
     function showButton() {
         setvisible('visible')
     }
     async function showSummaryTc(){
         let user_id = user.user_id;
-        let res = await fetch(`${baseUrl}/api/get-scb-summary-tc/${user_id}/${startDate}/${endDate}`);
+        let res = await fetch(`${baseUrl}/api/get-loan-summary-tc/${user_id}/${startDate}/${endDate}`);
         res = await res.json();
         setData(res)
         if(res.length >0){
@@ -57,7 +58,7 @@ function SummaryScb() {
     }
     async function showSummaryTl(){
         let user_id = user.user_id;
-        let res = await fetch(`${baseUrl}/api/get-scb-summary-tl/${user_id}/${startDate}/${endDate}`);
+        let res = await fetch(`${baseUrl}/api/get-hsbc-summary-tl/${user_id}/${startDate}/${endDate}`);
         res = await res.json();
         setData(res)
         if(res.length >0){
@@ -67,7 +68,7 @@ function SummaryScb() {
     }
     async function showSummaryBm(){
         let user_id = user.user_id;
-        let res = await fetch(`${baseUrl}/api/get-scb-summary-bm/${user_id}/${startDate}/${endDate}`);
+        let res = await fetch(`${baseUrl}/api/get-hsbc-summary-bm/${user_id}/${startDate}/${endDate}`);
         res = await res.json();
         setData(res)
         if(res.length >0){
@@ -77,7 +78,7 @@ function SummaryScb() {
     }
     async function showData(){
         let user_id = user.user_id;
-        let res = await fetch(`${baseUrl}/api/get-scb-data/${user_id}/${startDate}/${endDate}`);
+        let res = await fetch(`${baseUrl}/api/get-loan-data/${bank}/${user_id}/${startDate}/${endDate}`);
         res = await res.json();
         console.log(res)
         setData(res)
@@ -102,7 +103,7 @@ function SummaryScb() {
         const headers =[keys];
     
         const tabledata = data.map(elt=> [elt.ID, elt.Date, elt.FIRST_NAME, elt.LAST_NAME, elt.PAN, elt.TC, 
-            elt.TL, elt.BM, elt.AIP_NO, elt.TL_STATUS, elt.STATUS, elt.REMARK]);
+            elt.TL, elt.BM, elt.APPLICATION_NO,  elt.TL_STATUS, elt.STATUS, elt.REMARK]);
             
     
         let content = {
@@ -166,7 +167,7 @@ function SummaryScb() {
                 </div><br />
             <div className="row col-md-12">
             {
-                        user.role === 1 || user.role === 6 || user.role === 2 || user.role === 4 ?
+                        user.role === 1 || user.role === 6 || user.role === 2 || user.role === 4 || user.role === 5 ?
                             <>
                                 <div className="col-md-2">
                                     <Button style={{ width: "100%" }} onClick={showButton} type="button" className="btn btn-dark" >Summary</Button>
@@ -187,7 +188,6 @@ function SummaryScb() {
                                 
                             </>
                     }
-                
 
             </div><hr />
             <div style={{ visibility: `${visible}` }}>
@@ -205,10 +205,10 @@ function SummaryScb() {
                             <Button style={{ width: "100%", height: "100%" }} onClick={exportPDF} type="button" className="btn btn-secondary" ><FaFileDownload /> Get Report</Button>
                         </div>
                     </div><hr /></div>
-            <SummaryTable data={data} keys={keys} type={flag} bank="SCB" getData={showData}/>
+            <SummaryTable data={data} keys={keys} type={flag} bank="LOAN" getData={showData}/>
         </div>
     );
 
 }
 
-export default SummaryScb;
+export default SummaryLoan;

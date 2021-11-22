@@ -189,7 +189,7 @@ export default class SummaryTable extends React.Component {
       title: 'Action', dataIndex: 'Action', width: 'auto', key: 'operation',  render: (text, record) => <a>
       
         {
-          this.user.role === 1 ?
+          this.user.role === 1 || user.role === 6 ?
           <>
           {
             this.props.type === 3?

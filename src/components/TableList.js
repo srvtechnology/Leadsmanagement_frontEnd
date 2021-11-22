@@ -1,11 +1,13 @@
 import { BsFillTrashFill, BsPersonPlusFill, BsPeopleCircle, BsQuestionOctagonFill } from "react-icons/bs"
 import { Modal } from "react-bootstrap";
+import { FaEye } from "react-icons/fa";
 import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import React from "react";
 import axios from 'axios';
 import ReactTooltip from "react-tooltip";
+import {  Link } from "react-router-dom";
 
 
 import baseUrl from './baseurl';
@@ -129,6 +131,24 @@ export default class TableList extends React.Component {
       return false;
     }
   }
+  cancelLeave(record) {
+    // console.log(record.USER_ID)
+    let data = { leave_id: record.id }
+    if (window.confirm("Sure Delete This Leave?")) {
+
+      axios.post(`${baseUrl}/api/delete-leave`, data)
+      .then(function (res) {
+        console.log(res.data);
+       
+      })
+      .catch(function (res) {
+        console.log(res);
+      });
+      window.location.reload(false)
+    } else {
+      return false;
+    }
+  }
   onCloseModal = () => {
     this.setState({ show: false })
   }
@@ -202,27 +222,35 @@ export default class TableList extends React.Component {
     columns.push({
       title: 'Action', dataIndex: 'Action', width: 'auto', key: 'operation', render: (text, record) => <a>
         {
-          this.user.role === 1 ?
+          this.user.role === 1 || this.user.role === 6 && this.props.type !== 5 ?
           <>
           <button data-tip data-for="registerTip" onClick={(e) => this.resetPassword(record)}><BsQuestionOctagonFill /></button>
+
               {
                 this.props.type === 3 ?
                   <>
                     <span>  </span><button data-tip data-for="mapuser" onClick={(e) => this.showModal(record)}><BsPersonPlusFill /></button>
                   </>
-                  :
-                  <></>
+                  :null
               }
               <span>   </span><button data-tip data-for="delete" onClick={() => this.deleteMe(record)}><BsFillTrashFill /></button>
 
             </>
-            :
-            <>
-            </>
+            :this.user.role === 2 || this.user.role === 3 ?<>
+              <span>   </span><button data-tip data-for="deleteLeave" onClick={() => this.cancelLeave(record)}><BsFillTrashFill /></button>
+              <span> </span><Link to={`/view-leave-application/${record.id}`}><button data-tip data-for="viewLeave"><FaEye /></button></Link>
+
+            </>:this.user.role === 1 || this.user.role === 6 && this.props.type === 5 ?<>
+            <span> </span><Link to={`/view-leave-application/${record.id}`}><button data-tip data-for="viewLeave"><FaEye /></button></Link>
+            
+            </>:null
+            
         }
         <ReactTooltip id="registerTip" place="top" effect="solid">Reset Password</ReactTooltip>
         <ReactTooltip id="mapuser" place="top" effect="solid">Assing Team Leader</ReactTooltip>
         <ReactTooltip id="delete" place="top" effect="solid">Delete User</ReactTooltip>
+        <ReactTooltip id="deleteLeave" place="top" effect="solid">Delete User</ReactTooltip>
+        <ReactTooltip id="viewLeave" place="top" effect="solid">Delete User</ReactTooltip>
       </a>,
 
     })
@@ -234,7 +262,7 @@ export default class TableList extends React.Component {
       }, this);
     return (
       <>
-        <Table columns={columns} dataSource={this.props.data} />
+        <Table columns={columns} dataSource={this.props.data} bordered scroll={{ x: "auto", y: 500 }}/>
         {/* <Modal show={this.state.show}>Message in Modal</Modal> */}
         <Modal show={this.state.show} onClose={this.onCloseModal}>
           <Modal.Header>

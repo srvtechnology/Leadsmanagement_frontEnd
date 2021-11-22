@@ -10,7 +10,7 @@ import "jspdf-autotable";
 import jsPDF from "jspdf";
 import {FaFileDownload} from "react-icons/fa";
 
-function SummaryScb() {
+function SummaryIIB() {
     let user = JSON.parse(localStorage.getItem('user-info'))
 
     const colourOptions = [
@@ -47,7 +47,7 @@ function SummaryScb() {
     }
     async function showSummaryTc(){
         let user_id = user.user_id;
-        let res = await fetch(`${baseUrl}/api/get-scb-summary-tc/${user_id}/${startDate}/${endDate}`);
+        let res = await fetch(`${baseUrl}/api/get-iib-summary-tc/${user_id}/${startDate}/${endDate}`);
         res = await res.json();
         setData(res)
         if(res.length >0){
@@ -57,7 +57,7 @@ function SummaryScb() {
     }
     async function showSummaryTl(){
         let user_id = user.user_id;
-        let res = await fetch(`${baseUrl}/api/get-scb-summary-tl/${user_id}/${startDate}/${endDate}`);
+        let res = await fetch(`${baseUrl}/api/get-iib-summary-tl/${user_id}/${startDate}/${endDate}`);
         res = await res.json();
         setData(res)
         if(res.length >0){
@@ -67,7 +67,7 @@ function SummaryScb() {
     }
     async function showSummaryBm(){
         let user_id = user.user_id;
-        let res = await fetch(`${baseUrl}/api/get-scb-summary-bm/${user_id}/${startDate}/${endDate}`);
+        let res = await fetch(`${baseUrl}/api/get-iib-summary-bm/${user_id}/${startDate}/${endDate}`);
         res = await res.json();
         setData(res)
         if(res.length >0){
@@ -77,7 +77,7 @@ function SummaryScb() {
     }
     async function showData(){
         let user_id = user.user_id;
-        let res = await fetch(`${baseUrl}/api/get-scb-data/${user_id}/${startDate}/${endDate}`);
+        let res = await fetch(`${baseUrl}/api/get-iib-data/${user_id}/${startDate}/${endDate}`);
         res = await res.json();
         console.log(res)
         setData(res)
@@ -87,7 +87,6 @@ function SummaryScb() {
         }
         
     }
-
     function reportPDF(){
         const unit = "pt";
         const size = "A4"; // Use A1, A2, A3 or A4
@@ -102,7 +101,7 @@ function SummaryScb() {
         const headers =[keys];
     
         const tabledata = data.map(elt=> [elt.ID, elt.Date, elt.FIRST_NAME, elt.LAST_NAME, elt.PAN, elt.TC, 
-            elt.TL, elt.BM, elt.AIP_NO, elt.TL_STATUS, elt.STATUS, elt.REMARK]);
+            elt.TL, elt.BM, elt.APPLICATION_NO,  elt.TL_STATUS, elt.STATUS, elt.REMARK]);
             
     
         let content = {
@@ -128,12 +127,9 @@ function SummaryScb() {
         const title = "My Report";
         const headers =[keys];
     
-        const tabledata = data.map(elt=> [elt.TC, elt.TL, elt.BM,  elt.lead, elt.CPV, elt.CPV_reject, elt.Need_correction, elt.api, 
-            elt.api_decline, elt.api_approve, elt.aadhar_auth_pending, elt.aadhar_auth_done, elt.e_sign_pending, elt.e_sign_done, 
-            elt.v_KYC_pending, elt.v_KYC_done, elt.Card_booked,elt.Card_reject,]);
-            
-            
-    
+        const tabledata = data.map(elt=> [elt.TC, elt.TL, elt.BM, , elt.Verification_pending, elt.CPV, elt.Need_correction, 
+            elt.Card_booked, elt.e_KYC_Done, elt.Login, elt.Decline]);
+        
         let content = {
           startY: 50,
           head: headers,
@@ -180,7 +176,7 @@ function SummaryScb() {
                                 <div className="col-md-2">
                                     <Button style={{ width: "100%" }} onClick={showData} type="button" className="btn btn-warning" >Data</Button>
                                 </div>
-                                
+                               
                                 <div className="col-md-2">
                             <Button style={{ width: "100%", height: "100%" }} onClick={reportPDF} type="button" className="btn btn-secondary" ><FaFileDownload /> Report PDF</Button>
                         </div>
@@ -205,10 +201,10 @@ function SummaryScb() {
                             <Button style={{ width: "100%", height: "100%" }} onClick={exportPDF} type="button" className="btn btn-secondary" ><FaFileDownload /> Get Report</Button>
                         </div>
                     </div><hr /></div>
-            <SummaryTable data={data} keys={keys} type={flag} bank="SCB" getData={showData}/>
+            <SummaryTable data={data} keys={keys} type={flag} bank="IIB" getData={showData}/>
         </div>
     );
 
 }
 
-export default SummaryScb;
+export default SummaryIIB;

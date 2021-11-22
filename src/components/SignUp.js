@@ -14,8 +14,8 @@ function SignUp(props) {
     // const history = useHistory()
     const user = JSON.parse(localStorage.getItem('user-info'))
     function register(props) {
-        
-        let data = { name, password, email, phone, role, bank, bm:user.user_id }
+
+        let data = { name, password, email, phone, role, bank, bm: user.user_id }
 
         fetch(`${baseUrl}/api/register`,
             {
@@ -57,7 +57,7 @@ function SignUp(props) {
         // }else if(e.target.value < 4){
         //     setShow(true) 
         // } 
-            
+
 
     }
     const Results = () => (
@@ -67,7 +67,10 @@ function SignUp(props) {
                 <option value="SBI">SBI</option>
                 <option value="SCB">SCB</option>
                 <option value="CITI">CITI</option>
-               
+                <option value="HDFC">HDFC</option>
+                <option value="IIB"> IIB</option>
+                <option value="HSBC">HSBC</option>
+
             </select>
         </div>
     )
@@ -98,6 +101,12 @@ function SignUp(props) {
                             <option value="2">Team Leader</option>
                             <option value="3">Tele Caller</option>
                             <option value="4">Bank Person</option>
+                            <option value="5">Bank Person Loan</option>
+                            {
+                                user.role === 1 ? <>
+                                    <option value="6">FOS Brach Manager</option>
+                                </> : null
+                            }
                         </select><br />
                     </div>
 

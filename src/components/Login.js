@@ -38,6 +38,7 @@ function Login() {
                     var interval = now + (min*60*1000)
                     localStorage.setItem("interval", JSON.stringify(interval))
                     history.push("/home")
+                    window.location.reload(false)
                 } else {
                     setMessage("Wrong Credentials!")
                 }

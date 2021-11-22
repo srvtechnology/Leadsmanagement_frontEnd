@@ -5,7 +5,9 @@ import SummaryTable from "./SummaryTable";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Header from "./Header";
-
+import "jspdf-autotable";
+import jsPDF from "jspdf";
+import {FaFileDownload} from "react-icons/fa";
 import { Image, Modal, Button, BsCheckCircle } from "react-bootstrap";
 
 import baseUrl from './baseurl';
@@ -24,7 +26,7 @@ function SummaryCitiBank() {
     const day = date.getDate();const day1 = date.getDate()-(day-1);const month= date.getMonth() + 1;const year = date.getFullYear();
     const yesterday = year+'-'+month+'-0'+day1
     console.log(yesterday);
-    const today = year+'-'+month+'-'+day
+    const today = day < 10 ? year+'-'+month+'-0'+day : year+'-'+month+'-'+day
     const [startDate, setStartDate] = useState(yesterday);
     const [endDate, setEndDate] = useState(today);
     const [keys, setKeys] = useState([])
@@ -83,6 +85,61 @@ function SummaryCitiBank() {
         }
 
     }
+
+    function reportPDF(){
+        const unit = "pt";
+        const size = "A4"; // Use A1, A2, A3 or A4
+        const orientation = "landscape"; // portrait or landscape
+    
+        const marginLeft = 40;
+        const doc = new jsPDF(orientation, unit, size);
+    
+        doc.setFontSize(15);
+    
+        const title = "My Report";
+        const headers =[keys];
+    
+        const tabledata = data.map(elt=> [elt.ID, elt.Date, elt.FIRST_NAME, elt.LAST_NAME, elt.PAN, elt.TC, 
+            elt.TL, elt.BM, elt.APPLICATION_NO,  elt.TL_STATUS,elt.STATUS, elt.REMARK]);
+            
+    
+        let content = {
+          startY: 50,
+          head: headers,
+          body: tabledata
+        };
+    
+        doc.text(title, marginLeft, 40);
+        doc.autoTable(content);
+        doc.save("report.pdf")
+      }
+    function exportPDF(){
+        const unit = "pt";
+        const size = "A4"; // Use A1, A2, A3 or A4
+        const orientation = "landscape"; // portrait or landscape
+    
+        const marginLeft = 40;
+        const doc = new jsPDF(orientation, unit, size);
+    
+        doc.setFontSize(15);
+    
+        const title = "My Report";
+        const headers =[keys];
+    
+        const tabledata = data.map(elt=> [elt.TC, elt.TL, elt.BM, elt.verification_pending, elt.dip_call_done, elt.Need_correction, 
+            elt.Approve, elt.Decline, elt.e_KYC_pending, elt.e_KYC_done, elt.v_KYC_pending, elt.v_KYC_done, elt.Card_booked, elt.Card_reject]);
+            
+    
+        let content = {
+          startY: 50,
+          head: headers,
+          body: tabledata
+        };
+    
+        doc.text(title, marginLeft, 40);
+        doc.autoTable(content);
+        doc.save("report.pdf")
+      }
     // async function showDuplicate() {
     //     setvisible('hidden')
     //     let user_id = user.user_id;
@@ -122,7 +179,7 @@ function SummaryCitiBank() {
                 </div><br />
                 <div className="row col-md-12">
                     {
-                        user.role === 1 || user.role === 2 || user.role === 4 ?
+                        user.role === 1 || user.role === 6 || user.role === 2 || user.role === 4 ?
                             <>
                                 <div className="col-md-2">
                                     <Button style={{ width: "100%" }} onClick={showButton} type="button" className="btn btn-dark" >Summary</Button>
@@ -137,9 +194,9 @@ function SummaryCitiBank() {
                                 <div className="col-md-2">
                                     <Button style={{ width: "100%" }} onClick={showData} type="button" className="btn btn-warning" >Data</Button>
                                 </div>
-                                {/* <div className="col-md-2">
-                                    <Button style={{ width: "100%" }} onClick={showDuplicate} type="button" className="btn btn-primary" >Duplicate</Button>
-                                </div> */}
+                                <div className="col-md-2">
+                            <Button style={{ width: "100%", height: "100%" }} onClick={reportPDF} type="button" className="btn btn-secondary" ><FaFileDownload /> Report PDF</Button>
+                        </div>
                             </>
                     }
 
@@ -155,6 +212,9 @@ function SummaryCitiBank() {
                         </div>
                         <div className="col-md-2">
                             <Button style={{ width: "100%", height: "100%" }} onClick={showSummaryBm} type="button" className="btn btn-danger" >Branch Manager</Button>
+                        </div>
+                        <div className="col-md-2">
+                            <Button style={{ width: "100%", height: "100%" }} onClick={exportPDF} type="button" className="btn btn-secondary" ><FaFileDownload /> Get Report</Button>
                         </div>
                     </div><hr /></div>
 

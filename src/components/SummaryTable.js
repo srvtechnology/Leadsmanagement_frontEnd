@@ -1,5 +1,7 @@
 import { BsFillTrashFill, BsPencilSquare, BsCheckCircle, BsXCircle, BsFillGrid3X3GapFill, BsCheckAll, BsX } from "react-icons/bs"
 import { Modal } from "react-bootstrap";
+import { FaEye } from "react-icons/fa";
+
 import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
@@ -32,7 +34,10 @@ export default class SummaryTable extends React.Component {
       tc: '',
       tl: '',
       tableData: '',
-      redirect: null
+      redirect: null,
+      pagination: {
+        pageSize: 100,
+      },
     };
     this.user = JSON.parse(localStorage.getItem('user-info'))
   }
@@ -238,7 +243,60 @@ export default class SummaryTable extends React.Component {
     }
   }
 
+  deleteleadIIB = (record, props) => {
+    // console.log(record.USER_ID)
+    let data = { id: record.ID }
+    if (window.confirm("Delete user " + record.FIRST_NAME + "?")) {
 
+      axios.post(`${baseUrl}/api/delete-iib-lead`, data)
+        .then(function (res) {
+          console.log(res.data);
+          props.getData()
+        })
+        .catch(function (res) {
+          console.log(res);
+        });
+
+    } else {
+      return false;
+    }
+  }
+  deleteleadHsbc = (record, props) => {
+    // console.log(record.USER_ID)
+    let data = { id: record.ID }
+    if (window.confirm("Delete user " + record.FIRST_NAME + "?")) {
+
+      axios.post(`${baseUrl}/api/delete-hsbc-lead`, data)
+        .then(function (res) {
+          console.log(res.data);
+          props.getData()
+        })
+        .catch(function (res) {
+          console.log(res);
+        });
+
+    } else {
+      return false;
+    }
+  }
+  deleteleadLoan = (record, props) => {
+    // console.log(record.USER_ID)
+    let data = { id: record.ID }
+    if (window.confirm("Delete Loan of " + record.FIRST_NAME + "?")) {
+
+      axios.post(`${baseUrl}/api/delete-loan-lead`, data)
+        .then(function (res) {
+          console.log(res.data);
+          props.getData()
+        })
+        .catch(function (res) {
+          console.log(res);
+        });
+
+    } else {
+      return false;
+    }
+  }
   render() {
 
     const columns = [];
@@ -267,46 +325,7 @@ export default class SummaryTable extends React.Component {
     }
     for (var i = 0; i < this.props.keys.length; i++) {
       var id = i
-      // if (this.props.keys[i] === 'STATUS' && this.props.type === 1) {
-      //   columns.push({
-      //     title: this.props.keys[i],
-      //     dataIndex: this.props.keys[i],
-      //     key: this.props.keys[i],
-      //     width: 'auto',
-      //     fixed: 'right',
-      //     ...this.getColumnSearchProps(this.props.keys[i]),
-      //     render: text => <>
-      //     {
-      //       text == "App Code Pending" ?
-      //       <>
-      //       <p style={{ fontWeight:"bold", color:"#ffca00"}}>{text}</p>
-      //       </>:text == "QD Pending" ?
-      //       <>
-      //       <p style={{ fontWeight:"bold", color:"#ff6b00"}}>{text}</p>
-      //       </>:text == "Need Correction" ?
-      //       <>
-      //       <p style={{ fontWeight:"bold", color:"crimson"}}>{text}</p>
-      //       </>:text == "App Code Not Received" ?
-      //       <>
-      //       <p style={{ fontWeight:"bold", color:"blue"}}>{text}</p>
-      //       </>:text == "App Code Not Received" ?
-      //       <>
-      //       <p style={{ fontWeight:"bold", color:"rebeccapurple"}}>{text}</p>
-      //       </>:text == "Approve" ?
-      //       <>
-      //       <p style={{ fontWeight:"bold", color:"green"}}>{text}</p>
-      //       </>:text == "Decline" ?
-      //       <>
-      //       <p style={{ fontWeight:"bold", color:"red"}}>{text}</p>
-      //       </>:text == "Card Booked" ?
-      //       <>
-      //       <p style={{ fontWeight:"bold", color:"darkgreen"}}>{text}</p>
-      //       </>:
-      //       <></>
-      //     }
-      //     </>,
-      //   })
-      // }else 
+
       if (this.props.keys[i] === 'STATUS' && this.props.type === 2) {
         columns.push({
           title: 'STATUS',
@@ -316,95 +335,115 @@ export default class SummaryTable extends React.Component {
               text == "App Code Pending" ?
                 <>
                   <p style={{ fontWeight: "bold", color: "#ffca00" }}>{text}</p>
-                </> : text == "QD Pending" ?
-                  <>
-                    <p style={{ fontWeight: "bold", color: "#ff6b00" }}>{text}</p>
-                  </> : text == "QD" ?
+                    </> : text == "QD Pending" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "#ff6b00" }}>{text}</p>
+                    </> : text == "QD" ?
                     <>
                       <p style={{ fontWeight: "bold", color: "#ff6b00" }}>{text}</p>
                     </> : text == "Need Correction" ?
-                      <>
-                        <p style={{ fontWeight: "bold", color: "crimson" }}>{text}</p>
-                      </> : text == "App Code Received" ?
-                        <>
-                          <p style={{ fontWeight: "bold", color: "blue" }}>{text}</p>
-                        </> : text == "App Code Not Received" ?
-                          <>
-                            <p style={{ fontWeight: "bold", color: "rebeccapurple" }}>{text}</p>
-                          </> : text == "e-KYC Done" ?
-                            <>
-                              <p style={{ fontWeight: "bold", color: "rebeccapurple" }}>{text}</p>
-                            </> : text == "v-KYC Done" ?
-                              <>
-                                <p style={{ fontWeight: "bold", color: "rebeccapurple" }}>{text}</p>
-                              </> : text == "e-KYC Pending" ?
-                                <>
-                                  <p style={{ fontWeight: "bold", color: "orangered" }}>{text}</p>
-                                </> : text == "v-KYC Pending" ?
-                                  <>
-                                    <p style={{ fontWeight: "bold", color: "orangered" }}>{text}</p>
-                                  </> : text == "e-Sign Pending" ?
-                                    <>
-                                      <p style={{ fontWeight: "bold", color: "red" }}>{text}</p>
-                                    </> : text == "Aadhaar Auth Pending" ?
-                                      <>
-                                        <p style={{ fontWeight: "bold", color: "orangered" }}>{text}</p>
-                                      </> : text == "e-Sign Done" ?
-                                        <>
-                                          <p style={{ fontWeight: "bold", color: "rebeccapurple" }}>{text}</p>
-                                        </> : text == "Aadhaar Auth Done" ?
-                                          <>
-                                            <p style={{ fontWeight: "bold", color: "rebeccapurple" }}>{text}</p>
-                                          </> : text == "Doc. Pending" ?
-                                            <>
-                                              <p style={{ fontWeight: "bold", color: "orangered" }}>{text}</p>
-                                            </> : text == "Doc. Uploaded" ?
-                                              <>
-                                                <p style={{ fontWeight: "bold", color: "rebeccapurple" }}>{text}</p>
-                                              </> : text == "Approve" ?
-                                                <>
-                                                  <p style={{ fontWeight: "bold", color: "green" }}>{text}</p>
-                                                </> : text == "Decline" ?
-                                                  <>
-                                                    <p style={{ fontWeight: "bold", color: "red" }}>{text}</p>
-                                                  </> : text == "Card Reject" ?
-                                                    <>
-                                                      <p style={{ fontWeight: "bold", color: "red" }}>{text}</p>
-                                                    </> : text == "Verification Pending" ?
-                                                      <>
-                                                        <p style={{ fontWeight: "bold", color: "#ff6b00" }}>{text}</p>
-                                                      </> : text == "Card Booked" ?
-                                                        <>
-                                                          <p style={{ fontWeight: "bold", color: "darkgreen" }}>{text}</p>
-                                                        </> : text == "Dip Call Pending" ?
-                                                          <>
-                                                            <p style={{ fontWeight: "bold", color: "palevioletred" }}>{text}</p>
-                                                          </> : text == "Dip Call Done" ?
-                                                            <>
-                                                              <p style={{ fontWeight: "bold", color: "#ff6b00" }}>{text}</p>
-                                                            </> : text == "Lead" ?
-                                                              <>
-                                                                <p style={{ fontWeight: "bold", color: "yellow" }}>{text}</p>
-                                                              </> : text == "CPV" ?
-                                                                <>
-                                                                  <p style={{ fontWeight: "bold", color: "red" }}>{text}</p>
-                                                                </> : text == "CPV Reject" ?
-                                                                  <>
-                                                                    <p style={{ fontWeight: "bold", color: "blue" }}>{text}</p>
-                                                                  </> : text == "AIP" ?
-                                                                    <>
-                                                                      <p style={{ fontWeight: "bold", color: "yellowgreen" }}>{text}</p>
-                                                                    </> : text == "AIP Approved" ?
-                                                                      <>
-                                                                        <p style={{ fontWeight: "bold", color: "orangered" }}>{text}</p>
-                                                                      </> : text == "AIP Declined" ?
-                                                                        <>
-                                                                          <p style={{ fontWeight: "bold", color: "red" }}>{text}</p>
-                                                                        </> : text == "e-Sign Done" ?
-                                                                          <>
-                                                                            <p style={{ fontWeight: "bold", color: "rosybrown" }}>{text}</p>
-                                                                          </> :
-                                                                          <></>
+                    <>
+                      <p style={{ fontWeight: "bold", color: "crimson" }}>{text}</p>
+                    </> : text == "App Code Received" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "blue" }}>{text}</p>
+                    </> : text == "App Code Not Received" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "rebeccapurple" }}>{text}</p>
+                    </> : text == "e-KYC Done" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "rebeccapurple" }}>{text}</p>
+                    </> : text == "v-KYC Done" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "rebeccapurple" }}>{text}</p>
+                    </> : text == "e-KYC Pending" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "orangered" }}>{text}</p>
+                    </> : text == "v-KYC Pending" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "orangered" }}>{text}</p>
+                    </> : text == "e-Sign Pending" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "red" }}>{text}</p>
+                    </> : text == "Aadhaar Auth Pending" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "orangered" }}>{text}</p>
+                    </> : text == "e-Sign Done" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "rebeccapurple" }}>{text}</p>
+                    </> : text == "Aadhaar Auth Done" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "rebeccapurple" }}>{text}</p>
+                    </> : text == "Doc. Pending" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "orangered" }}>{text}</p>
+                    </> : text == "Doc. Uploaded" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "rebeccapurple" }}>{text}</p>
+                    </> : text == "Lead Approve" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "green" }}>{text}</p>
+                      </> : text == "Approve" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "green" }}>{text}</p>
+                    </> : text == "Decline" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "red" }}>{text}</p>
+                    </> : text == "Card Reject" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "red" }}>{text}</p>
+                    </> : text == "Lead Verification Pending" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "#ff6b00" }}>{text}</p>
+                    </> : text == "Card Booked" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "darkgreen" }}>{text}</p>
+                    </> : text == "Dip Call Pending" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "palevioletred" }}>{text}</p>
+                    </> : text == "e-Sign Mail Sent" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "palevioletred" }}>{text}</p>
+                    </> : text == "Call Pending" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "palevioletred" }}>{text}</p>
+                      </> : text == "Login" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "blue" }}>{text}</p>
+                    </> : text == "Dip Call Done" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "#ff6b00" }}>{text}</p>
+                    </> : text == "e-Sign Mail Done" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "#ff6b00" }}>{text}</p>
+                    </> : text == "Call Done" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "#ff6b00" }}>{text}</p>
+                    </> : text == "Lead" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "yellow" }}>{text}</p>
+                    </> : text == "CPV" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "red" }}>{text}</p>
+                    </> : text == "CPV Reject" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "blue" }}>{text}</p>
+                    </> : text == "AIP" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "yellowgreen" }}>{text}</p>
+                    </> : text == "AIP Approved" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "orangered" }}>{text}</p>
+                    </> : text == "AIP Declined" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "red" }}>{text}</p>
+                    </> : text == "e-Sign Done" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "rosybrown" }}>{text}</p>
+                      </> : text == "Disbursed" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "rosybrown" }}>{text}</p>
+                    </> :<></>
             }
           </>,
         })
@@ -432,40 +471,47 @@ export default class SummaryTable extends React.Component {
           render: text => <>
             {
               text == "Approve" ?
-                <>
-                  <p style={{ fontWeight: "bold", color: "green" }}>{text}</p>
-                </> : text == "Reject" ?
-                  <>
-                    <p style={{ fontWeight: "bold", color: "red" }}>{text}</p>
-                  </> : text == "App Code Sent" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "green" }}>{text}</p>
+                    </> : text == "Reject" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "red" }}>{text}</p>
+                    </> : text == "App Code Sent" ?
                     <>
                       <p style={{ fontWeight: "bold", color: "darkmagenta" }}>{text}</p>
                     </> : text == "e-KYC Pending" ?
-                      <>
-                        <p style={{ fontWeight: "bold", color: "orangered" }}>{text}</p>
-                      </> : text == "v-KYC Pending" ?
-                        <>
-                          <p style={{ fontWeight: "bold", color: "orangered" }}>{text}</p>
-                        </> : text == "Doc. Pending" ?
-                          <>
-                            <p style={{ fontWeight: "bold", color: "orangered" }}>{text}</p>
-                          </> : text == "e-KYC Done" ?
-                            <>
-                              <p style={{ fontWeight: "bold", color: "blue" }}>{text}</p>
-                            </> : text == "v-KYC Done" ?
-                              <>
-                                <p style={{ fontWeight: "bold", color: "blue" }}>{text}</p>
-                              </> : text == "e-Sign Done" ?
-                                <>
-                                  <p style={{ fontWeight: "bold", color: "blue" }}>{text}</p>
-                                </> : text == "Aadhaar Auth Done" ?
-                                  <>
-                                    <p style={{ fontWeight: "bold", color: "blue" }}>{text}</p>
-                                  </> : text == "Doc. Uploaded" ?
-                                    <>
-                                      <p style={{ fontWeight: "bold", color: "blue" }}>{text}</p>
-                                    </> :
-                                    <></>
+                    <>
+                      <p style={{ fontWeight: "bold", color: "orangered" }}>{text}</p>
+                    </> : text == "v-KYC Pending" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "orangered" }}>{text}</p>
+                    </> : text == "Doc. Pending" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "orangered" }}>{text}</p>
+                    </> : text == "e-KYC Done" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "blue" }}>{text}</p>
+                    </> : text == "v-KYC Done" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "blue" }}>{text}</p>
+                    </> : text == "e-Sign Done" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "blue" }}>{text}</p>
+                    </> : text == "Aadhaar Auth Done" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "blue" }}>{text}</p>
+                    </> : text == "Doc. Uploaded" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "blue" }}>{text}</p>
+                    </> : text == "e-Sign Mail Done" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "blue" }}>{text}</p>
+                    </> : text == "Call Done" ?
+                    <>
+                      <p style={{ fontWeight: "bold", color: "blue" }}>{text}</p>
+
+                    </> :
+                    <></>
             }
           </>,
         })
@@ -486,27 +532,25 @@ export default class SummaryTable extends React.Component {
         title: 'Action', dataIndex: 'Action', width: 'auto', key: 'operation', fixed: 'right',
         render: (text, record) => <a>
 
-          {/* {
-            this.user.role === 1 ?
-              <> */}
+          
           {
             this.props.type === 3 ?
               <>
                 {
-                  this.user.role === 1 || this.user.role === 4 ?
+                  this.user.role === 1 || this.user.role === 6 || this.user.role === 4 || this.user.role === 5 ?
                     <>
                       <span>  </span><button onClick={(e) => this.panAccept(record, this.props)}><BsCheckCircle /></button>
                       <span>   </span><button onClick={() => this.panReject(record, this.props)}><BsXCircle /></button>
                       {
-                      this.props.bank === 'SBI' && record.STATUS === 'OK' ? <>
-                        <span>  </span>
-                        <Link to={`/edit-sbi-entry/${record.ID}`}><button data-tip data-for="registerTip"><BsPencilSquare /></button></Link>
-                      </> : this.props.bank === 'SCB' && record.STATUS === 'OK' ?
-                        <>
+                        this.props.bank === 'SBI' && record.STATUS === 'OK' ? <>
                           <span>  </span>
-                          <Link to={`/edit-scb-entry/${record.ID}`}><button data-tip data-for="registerTip"><BsPencilSquare /></button></Link>
-                        </> : <></>}
-                    </> : this.user.role === 3 || this.user.role === 4 || this.user.role === 2 ?
+                          <Link to={`/edit-sbi-entry/${record.ID}`}><button data-tip data-for="registerTip"><BsPencilSquare /></button></Link>
+                        </> : this.props.bank === 'SCB' && record.STATUS === 'OK' ?
+                          <>
+                            <span>  </span>
+                            <Link to={`/edit-scb-entry/${record.ID}`}><button data-tip data-for="registerTip"><BsPencilSquare /></button></Link>
+                          </> : <></>}
+                    </> : this.user.role === 3 || this.user.role === 4 || this.user.role === 5 || this.user.role === 2 ?
                       <>
                         {this.props.bank === 'SBI' && record.STATUS === 'OK' ? <>
                           <span>  </span>
@@ -515,7 +559,20 @@ export default class SummaryTable extends React.Component {
                           <>
                             <span>  </span>
                             <Link to={`/edit-scb-entry/${record.ID}`}><button data-tip data-for="registerTip"><BsPencilSquare /></button></Link>
-                          </> : <></>}
+                          </> : this.props.bank === 'IIB' && record.STATUS === 'OK' ?
+                            <>
+                              <span>  </span>
+                              <Link to={`/edit-iib-entry/${record.ID}`}><button data-tip data-for="registerTip"><BsPencilSquare /></button></Link>
+                            </> : this.props.bank === 'HSBC' && record.STATUS === 'OK' ?
+                              <>
+                                <span>  </span>
+                                <Link to={`/edit-hsbc-entry/${record.ID}`}><button data-tip data-for="registerTip"><BsPencilSquare /></button></Link>
+                                </> : this.props.bank === 'LOAN' && record.STATUS === 'OK' ?
+                              <>
+                                <span>  </span>
+                                <Link to={`/edit-loan-entry/${record.BANK}/${record.ID}`}><button data-tip data-for="registerTip"><BsPencilSquare /></button></Link>
+
+                              </> : <></>}
                       </> : <></>
                 }
               </>
@@ -524,45 +581,87 @@ export default class SummaryTable extends React.Component {
                 <>
 
                   {this.props.bank === 'SBI' ? <>
-                    <span>  </span>
-                    <Link to={`/edit-sbi-entry/${record.ID}`}><button data-tip data-for="registerTip"><BsPencilSquare /></button></Link>
+                    <span> </span><Link to={`/edit-sbi-entry/${record.ID}`}><button data-tip data-for="registerTip"><BsPencilSquare /></button></Link>
+                    <span> </span><Link to={`/view-sbi-entry/${record.ID}`}><button data-tip data-for="registerTip"><FaEye /></button></Link>
+
                     {
-                      this.user.role === 1 ? <>
+                      this.user.role === 1 || this.user.role === 6 ? <>
                         <span>   </span><button data-tip data-for="delete" onClick={() => this.deleteleadSbi(record, this.props)}><BsFillTrashFill /></button>
+
                       </> : null
                     }
 
                   </> : this.props.bank === 'SCB' ?
                     <>
                       <span> </span><Link to={`/edit-scb-entry/${record.ID}`}><button data-tip data-for="registerTip"><BsPencilSquare /></button></Link>
+                      <span> </span><Link to={`/view-scb-entry/${record.ID}`}><button data-tip data-for="registerTip"><FaEye /></button></Link>
+
                       {
-                        this.user.role === 1 ? <>
+                        this.user.role === 1 || this.user.role === 6 ? <>
                           <span> </span><button data-tip data-for="delete" onClick={() => this.deleteleadScb(record, this.props)}><BsFillTrashFill /></button>
                         </> : null
                       }
-
-                    </> : this.props.bank === 'CITI' ?
+                    </> : this.props.bank === 'IIB' ?
                       <>
-                        <span>  </span>
-                        <Link to={`/edit-citi-bank-entry/${record.ID}`}><button data-tip data-for="registerTip"><BsPencilSquare /></button></Link>
-                        {
-                          this.user.role === 1 ?
-                            <>
-                              <span>   </span><button data-tip data-for="delete" onClick={() => this.deleteleadCiti(record, this.props)}><BsFillTrashFill /></button>
-                            </> : null
-                        }
-                      </> : this.props.bank === 'HDFC' ?
-                      <>
-                        <span>  </span>
-                        <Link to={`/edit-hdfc-bank-entry/${record.ID}`}><button data-tip data-for="registerTip"><BsPencilSquare /></button></Link>
-                        {
-                          this.user.role === 1 ?
-                            <>
-                              <span>   </span><button data-tip data-for="delete" onClick={() => this.deleteleadHdfc(record, this.props)}><BsFillTrashFill /></button>
-                            </> : null
-                        }
+                        <span> </span><Link to={`/edit-iib-entry/${record.ID}`}><button data-tip data-for="registerTip"><BsPencilSquare /></button></Link>
+                        <span> </span><Link to={`/view-iib-entry/${record.ID}`}><button data-tip data-for="registerTip"><FaEye /></button></Link>
 
-                      </> : <></>}
+                        {
+                          this.user.role === 1 || this.user.role === 6 ? <>
+                            <span> </span><button data-tip data-for="delete" onClick={() => this.deleteleadIIB(record, this.props)}><BsFillTrashFill /></button>
+                          </> : null
+                        }
+                      </> : this.props.bank === 'HSBC' ?
+                        <>
+                          <span> </span><Link to={`/edit-hsbc-entry/${record.ID}`}><button data-tip data-for="registerTip"><BsPencilSquare /></button></Link>
+                          <span> </span><Link to={`/view-hsbc-entry/${record.ID}`}><button data-tip data-for="registerTip"><FaEye /></button></Link>
+
+                          {
+                            this.user.role === 1 || this.user.role === 6 ? <>
+                              <span> </span><button data-tip data-for="delete" onClick={() => this.deleteleadHsbc(record, this.props)}><BsFillTrashFill /></button>
+                            </> : null
+                          }
+                        </> : this.props.bank === 'CITI' ?
+                          <>
+                            <span>  </span>
+                            <Link to={`/edit-citi-bank-entry/${record.ID}`}><button data-tip data-for="registerTip"><BsPencilSquare /></button></Link>
+                            <span>  </span>
+                            <Link to={`/view-citi-bank-entry/${record.ID}`}><button data-tip data-for="registerTip"><FaEye /></button></Link>
+
+                            {
+                              this.user.role === 1 || this.user.role === 6 ?
+                                <>
+                                  <span>   </span><button data-tip data-for="delete" onClick={() => this.deleteleadCiti(record, this.props)}><BsFillTrashFill /></button>
+                                </> : null
+                            }
+                          </> : this.props.bank === 'HDFC' ?
+                            <>
+                              <span>  </span>
+                              <Link to={`/edit-hdfc-bank-entry/${record.ID}`}><button data-tip data-for="registerTip"><BsPencilSquare /></button></Link>
+                              <span>  </span>
+                              <Link to={`/view-hdfc-bank-entry/${record.ID}`}><button data-tip data-for="registerTip"><FaEye /></button></Link>
+
+                              {
+                                this.user.role === 1 || this.user.role === 6 ?
+                                  <>
+                                    <span>   </span><button data-tip data-for="delete" onClick={() => this.deleteleadHdfc(record, this.props)}><BsFillTrashFill /></button>
+                                  </> : null
+                              }
+                               </> : this.props.bank === 'LOAN' ?
+                            <>
+                              <span>  </span>
+                              <Link to={`/edit-loan-bank-entry/${record.ID}/${record.BANK}`}><button data-tip data-for="registerTip"><BsPencilSquare /></button></Link>
+                              <span>  </span>
+                              <Link to={`/view-loan-bank-entry/${record.ID}/${record.BANK}`}><button data-tip data-for="registerTip"><FaEye /></button></Link>
+
+                              {
+                                this.user.role === 1 || this.user.role === 6 ?
+                                  <>
+                                    <span>   </span><button data-tip data-for="delete" onClick={() => this.deleteleadLoan(record, this.props)}><BsFillTrashFill /></button>
+                                  </> : null
+                              }
+
+                            </> : <></>}
                 </> :
                 this.props.type === 1 && this.user.role === 2 ?
                   <>
@@ -585,6 +684,7 @@ export default class SummaryTable extends React.Component {
           <option key={i} value={item.USER_ID}>{item.NAME}</option>
         )
       }, this);
+    const { pagination } = this.state;
     return (
       <>
 
@@ -592,11 +692,11 @@ export default class SummaryTable extends React.Component {
           this.props.type === 1 ?
             <>
 
-              <Table columns={columns} dataSource={data} bordered scroll={{ x: 2000, y: 500 }} /></>
+              <Table columns={columns} dataSource={data} pagination={pagination} bordered scroll={{ x: 2000, y: 500 }} /></>
             : this.props.type === 2 ? <>
-              <Table columns={columns} dataSource={data} bordered backgroundColor="#bab2b2" scroll={{ x: 2500, y: 500 }} /></>
+              <Table columns={columns} dataSource={data} pagination={pagination} bordered backgroundColor="#bab2b2" scroll={{ x: 2500, y: 500 }} /></>
               : <>
-                <Table columns={columns} dataSource={data} bordered backgroundColor="#bab2b2" scroll={{ x: 1300, y: 500 }} /></>
+                <Table columns={columns} dataSource={data} pagination={pagination} bordered backgroundColor="#bab2b2" scroll={{ x: 1300, y: 500 }} /></>
 
         }
 
