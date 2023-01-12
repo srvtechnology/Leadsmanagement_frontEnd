@@ -71,10 +71,15 @@ function Header(Props) {
                                         <NavDropdown.Item href="/iib-summary"><BsGraphUp /> IIB Bank Summary</NavDropdown.Item>
                                         <NavDropdown.Item href="/loan-summary/IIB"><BsGraphUp /> IIB Loan Summary</NavDropdown.Item>
                                     </NavDropdown>
-                                    </> : user.bank == "HSBC" && user.role == 4 ? <>
+                                    {/* </> : user.bank == "HSBC" && user.role == 4 ? <>
                                     <NavDropdown className="cap" title={<><img src={baseUrl + `/asset/HSBC.png`} style={{ height: "20px" }} /> HSBC</>}>
                                         <NavDropdown.Item href="/hsbc-summary"><BsGraphUp /> HSBC Bank Summary</NavDropdown.Item>
                                         <NavDropdown.Item href="/loan-summary/HSBC"><BsGraphUp /> HSBC Loan Summary</NavDropdown.Item>
+                                    </NavDropdown> */}
+                                    </> : user.bank == "IDFC" && user.role == 4 ? <>
+                                    <NavDropdown className="cap" title={<><img src={baseUrl + `/asset/IDFC.png`} style={{ height: "20px" }} /> </>}>
+                                        <NavDropdown.Item href="/idfc-summary"><BsGraphUp /> IDFC Bank Summary</NavDropdown.Item>
+                                        <NavDropdown.Item href="/loan-summary/IDFC"><BsGraphUp /> IDFC Loan Summary</NavDropdown.Item>
                                     </NavDropdown>
                                     </> : user.bank == "LOAN" || user.role == 5 ? <>
                                     <NavDropdown className="cap" title={<><img src={baseUrl + `/asset/loan.png`} style={{ height: "30px" }} /> LOAN</>}>
@@ -112,12 +117,19 @@ function Header(Props) {
                                                 <NavDropdown.Item href="/loan-form/IIB"><BsPencilSquare /> IIB Loan</NavDropdown.Item>
                                             <NavDropdown.Item href="/loan-summary/IIB"><BsGraphUp /> IIB Loan Summary</NavDropdown.Item>
                                         </NavDropdown>
-                                        <NavDropdown className="cap" title={<><img src={baseUrl + `/asset/HSBC.png`} style={{ height: "20px" }} /> HSBC</>}>
+                                        {/* <NavDropdown className="cap" title={<><img src={baseUrl + `/asset/HSBC.png`} style={{ height: "20px" }} /> HSBC</>}>
                                                 <NavDropdown.Item href="/hsbc-entry"><BsPencilSquare /> HSBC Bank Entry</NavDropdown.Item>
                                                 <NavDropdown.Item href="/hsbc-summary"><BsGraphUp /> HSBC Bank Summary</NavDropdown.Item>
                                                 <NavDropdown.Item href="/loan-form/HSBC"><BsPencilSquare /> HSBC Loan</NavDropdown.Item>
                                             <NavDropdown.Item href="/loan-summary/HSBC"><BsGraphUp /> HSBC Loan Summary</NavDropdown.Item>
+                                        </NavDropdown> */}
+                                        <NavDropdown className="cap" title={<><img src={baseUrl + `/asset/IDFC.png`} style={{ height: "20px" }} alt="IDFC" /> </>}>
+                                                <NavDropdown.Item href="/idfc-entry"><BsPencilSquare /> IDFC Bank Entry</NavDropdown.Item>
+                                                <NavDropdown.Item href="/idfc-summary"><BsGraphUp /> IDFC Bank Summary</NavDropdown.Item>
+                                                <NavDropdown.Item href="/loan-form/IDFC"><BsPencilSquare /> IDFC Loan</NavDropdown.Item>
+                                            <NavDropdown.Item href="/loan-summary/IDFC"><BsGraphUp /> IDFC Loan Summary</NavDropdown.Item>
                                         </NavDropdown>
+                                        
                                         <NavDropdown className="cap" title={<><img src={baseUrl + `/asset/loan.png`} style={{ height: "30px" }} /> LOAN</>}>
                                                 <NavDropdown.Item href="/loan-form"><BsPencilSquare /> Loan Application</NavDropdown.Item>
                                                 <NavDropdown.Item href="/loan-summary"><BsGraphUp /> Loan Application Summary</NavDropdown.Item>

@@ -64,6 +64,7 @@ function SidePanel() {
                                             <NavDropdown.Item href="/team-leader" >Team Leaders</NavDropdown.Item>
                                             <NavDropdown.Item href="/tele-caller" >Tele Callers</NavDropdown.Item>
                                             <NavDropdown.Item href="/bank-person" >Bank Person</NavDropdown.Item>
+                                            <NavDropdown.Item href="/fos-list" >FOS</NavDropdown.Item>
                                             <NavDropdown.Item href="/bank-person-loan" >Bank Person Loan</NavDropdown.Item>
                                             <NavDropdown.Item href="/manage-leave" >Manage Leave</NavDropdown.Item>
                                         </NavDropdown>
@@ -163,9 +164,9 @@ function SidePanel() {
                                 </NavDropdown>
                             </Nav.Item><hr />
                             <Nav.Item>
-                                <NavDropdown className="cap" title={<><img src={baseUrl + `/asset/HSBC.png`} style={{ height: "20px" }} /> HSBC</>}>
-                                    <NavDropdown.Item href="/hsbc-entry"><BsPencilSquare /> HSBC Bank Entry</NavDropdown.Item>
-                                    <NavDropdown.Item href="/hsbc-summary"><BsGraphUp /> HSBC Bank Summary</NavDropdown.Item>
+                                <NavDropdown className="cap" title={<><img src={baseUrl + `/asset/IDFC.png`} style={{ height: "20px" }} /> </>}>
+                                    <NavDropdown.Item href="/idfc-entry"><BsPencilSquare /> IDFC Bank Entry</NavDropdown.Item>
+                                    <NavDropdown.Item href="/idfc-summary"><BsGraphUp /> IDFC Bank Summary</NavDropdown.Item>
                                 </NavDropdown>
                             </Nav.Item><hr />
                             <Nav.Item>

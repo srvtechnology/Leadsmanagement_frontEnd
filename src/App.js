@@ -19,6 +19,7 @@ import SummaryScb from './components/SummaryScb';
 import SbiEntryForm from './components/SbiEntryForm';
 import ResetPass from './components/ResetPass';
 import BankPerson from './components/BankPerson';
+import FosList from './components/FosList';
 import CitiBankForm from './components/CitiBankForm';
 import SummaryCitiBank from './components/SummaryCitiBank';
 import HdfcBankForm from './components/HdfcBankForm';
@@ -26,13 +27,16 @@ import SummaryHdfc from './components/SummaryHdfc';
 import ViewSbiLead from './components/ViewSbiLead';
 import IIBEntry from './components/IIBEntry';
 import HsbcEntry from './components/HsbcEntry';
+import IdfcEntry from './components/IdfcEntry';
 import SummaryIIB from './components/SummaryIIB';
 import SummaryHsbc from './components/SummaryHsbc';
+import SummaryIdfc from './components/SummaryIdfc';
 import SummaryLeave from './components/SummaryLeave';
 import LeaveForm from './components/LeaveForm';
 import LeaveApplication from './components/LeaveApplication';
 import ViewScbLead from './components/ViewScbLead';
 import ViewHsbcLead from './components/ViewHsbcLead';
+import ViewIdfcLead from './components/ViewIdfcLead';
 import ViewIIBLead from './components/ViewIIBLead';
 import ViewCitiLead from './components/ViewCitiLead';
 import ViewHdfcLead from './components/ViewHdfcLead';
@@ -76,6 +80,7 @@ function App(props) {
         <Route path="/tele-caller" component={TeleCaller} />
         <Route path="/bank-person" component={BankPerson} />
         <Route path="/bank-person-loan" component={BankPersonLoan} />
+        <Route path="/fos-list" component={FosList} />
 
 
         <Route path="/scb-entry" component={ScbEntry} />
@@ -84,6 +89,7 @@ function App(props) {
         <Route path="/hdfc-bank-entry" component={HdfcBankForm} />
         <Route path="/iib-entry" component={IIBEntry} />
         <Route path="/hsbc-entry" component={HsbcEntry} />
+        <Route path="/idfc-entry" component={IdfcEntry} />
 
         <Route path="/scb-summary" component={SummaryScb} />
         <Route path="/sbi-summary" component={SummarySbi} />
@@ -91,6 +97,7 @@ function App(props) {
         <Route path="/hdfc-bank-summary" component={SummaryHdfc} />
         <Route path="/iib-summary" component={SummaryIIB} />
         <Route path="/hsbc-summary" component={SummaryHsbc} />
+        <Route path="/idfc-summary" component={SummaryIdfc} />
 
         <Route path="/edit-sbi-entry/:id" component={SbiEntryForm} />
         <Route path="/edit-scb-entry/:id" component={ScbEntry} />
@@ -98,6 +105,7 @@ function App(props) {
         <Route path="/edit-hdfc-bank-entry/:id" component={HdfcBankForm} />
         <Route path="/edit-iib-entry/:id" component={IIBEntry} />
         <Route path="/edit-hsbc-entry/:id" component={HsbcEntry} />
+        <Route path="/edit-idfc-entry/:id" component={IdfcEntry} />
 
         <Route path="/view-sbi-entry/:id" component={ViewSbiLead} />
         <Route path="/view-scb-entry/:id" component={ViewScbLead} />
@@ -105,6 +113,7 @@ function App(props) {
         <Route path="/view-hdfc-bank-entry/:id" component={ViewHdfcLead} />
         <Route path="/view-iib-entry/:id" component={ViewIIBLead} />
         <Route path="/view-hsbc-entry/:id" component={ViewHsbcLead} />
+        <Route path="/view-idfc-entry/:id" component={ViewIdfcLead} />
         
         <Route path="/manage-leave" component={SummaryLeave} />
         <Route path="/leave-application" component={LeaveForm} />
